@@ -6,223 +6,63 @@
     <message>
         <location filename="EditDialog.cpp" line="15"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>添加</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="15"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="54"/>
         <source>Select an executable file</source>
-        <translation type="unfinished"></translation>
+        <translation>选择一个可执行文件</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="56"/>
-        <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc)</source>
-        <translation type="unfinished"></translation>
+        <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc);;All Files (*.*)</source>
+        <translation>可执行文件 (*.exe *.bat *.cmd *.ps1 *.msc);;所有文件 (*.*)</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="88"/>
         <source>Run as administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>以管理员权限运行</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="91"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="92"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="98"/>
         <source>Application, URL or Folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>应用程序，链接或文件夹：</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="99"/>
         <source>(Support relative path, If PortableStarter is installed in X:\PortableStarter, 
 you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</source>
-        <translation type="unfinished"></translation>
+        <translation>（支持相对路径，假如PortableStarter安装在X:\PortableStarter,你可以使用..\prog\prog.exe来启动位于X:\prog\prog.exe的程序）</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="102"/>
         <source>Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation>参数：</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="105"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>名称：</translation>
     </message>
     <message>
         <location filename="EditDialog.cpp" line="108"/>
         <source>Trigger Key (Split with comma):</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HotTestWidget</name>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="14"/>
-        <source>HotTestWidget</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="24"/>
-        <source>Playground</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="30"/>
-        <source>Hotkey &amp;1:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="37"/>
-        <source>Hotkey &amp;2:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="157"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="291"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="425"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="439"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="599"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="1028"/>
-        <source>Count:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="281"/>
-        <source>Hotkey &amp;3:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="305"/>
-        <source>Hotkey &amp;4:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="566"/>
-        <source>Hotkey &amp;5:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="766"/>
-        <source>Testings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="772"/>
-        <source>&lt;b&gt;Testing:&lt;/b&gt; Please press the combinations listed below to check whether they work properly or not. Every time a shortcut is triggered, the checkbox will toggle it&apos;s value. Set the test active to begin.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="782"/>
-        <source>Test Active:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="794"/>
-        <source>Hotkey: F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="804"/>
-        <source>Hotkey: ctrl+alt+meta+F12</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="814"/>
-        <source>Hotkey: ctrl+shift+cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="824"/>
-        <source>Hotkey: meta+del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="834"/>
-        <source>Hotkey: numlock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="844"/>
-        <source>Hotkey: ctrl+5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="854"/>
-        <source>Hotkey: shift+Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="864"/>
-        <source>Hotkey: shift+,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="874"/>
-        <source>Hotkey: shift+;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="884"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="894"/>
-        <source>Hotkey: shift+alt+K</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="921"/>
-        <source>Threading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="930"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This test was designed to try out multi-threaded shortcuts. The QHotkey class is completely &lt;span style=&quot; font-weight:600;&quot;&gt;threadsafe&lt;/span&gt;, but this test can help to see if it actually works (It does).&lt;/p&gt;&lt;p&gt;If activated, &lt;span style=&quot; font-style:italic;&quot;&gt;Hotkey 4 and Hotkey 5 &lt;/span&gt;of the Playground will each run on their own thread. This means:&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Mainthread:&lt;/span&gt; Hotkey 1, 2, 3&lt;/li&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Second thread:&lt;/span&gt; Hotkey 4&lt;/li&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Third thread:&lt;/span&gt; Hotkey 5&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The two hotkeys will be moved to the threads. For simplicity-reasons, you can&apos;t move them back in this test (But its possible, just not done here). Restart the test to get them back.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="949"/>
-        <source>Enable Threaded Hotkeys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="970"/>
-        <source>Native Shortcut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="976"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;QHotkey allows you to set native shortcuts explicitly. These, of course, only work on the platform they were chosen for. All platform use special constants for their key codes and modifiers, which makes it pretty simple to use them from code. If you want to test them out here, google for the tables.&lt;/p&gt;&lt;p&gt;In most cases, you will not need to specify native shortcuts directly. However, as explained on previous tabs, some shortcuts may not be creatable from Qt&apos;s key (e.g. Numblock numbers). In that case, you can set the directly.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Example: Ctrl+A&lt;/span&gt;&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Windows:&lt;/span&gt; Key: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0041&lt;/span&gt;, Modifier: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0002&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;X11:&lt;/span&gt; Key: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0026&lt;/span&gt;, Modifier: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0004&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;OsX:&lt;/span&gt; Key: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0000&lt;/span&gt;, Modifier: &lt;span style=&quot; font-style:italic;&quot;&gt;0x0100&lt;/span&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="988"/>
-        <source>Key:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="995"/>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="1015"/>
-        <source>0x</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="1008"/>
-        <source>Modifiers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/HotkeyTest/hottestwidget.ui" line="1145"/>
-        <source>Registered:</source>
-        <translation type="unfinished"></translation>
+        <translation>触发关键字（以逗号分割）：</translation>
     </message>
 </context>
 <context>
@@ -230,57 +70,57 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
     <message>
         <location filename="MainWindow.cpp" line="34"/>
         <source>Failed to register quick start hotkey!</source>
-        <translation type="unfinished"></translation>
+        <translation>注册快速启动热键失败！</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="49"/>
         <source>PortableStarter %1</source>
-        <translation type="unfinished"></translation>
+        <translation>PortableStarter %1</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="50"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>选项</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="54"/>
         <source>Homepage</source>
-        <translation type="unfinished"></translation>
+        <translation>官网</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="55"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="56"/>
         <source>Exit Portable Starter?</source>
-        <translation type="unfinished"></translation>
+        <translation>是否退出Portable Starter?</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="71"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="125"/>
         <source>Run as administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>以管理员权限运行</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="136"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="145"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="273"/>
         <source>Unable to run application (%1 %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>无法运行应用程序 （%1 %2)。</translation>
     </message>
 </context>
 <context>
@@ -288,40 +128,27 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
     <message>
         <location filename="OptionsDialog.cpp" line="27"/>
         <source>Failed to register quick start hotkey!</source>
-        <translation type="unfinished"></translation>
+        <translation>注册快速启动热键失败！</translation>
     </message>
     <message>
         <location filename="OptionsDialog.cpp" line="33"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>选项</translation>
     </message>
     <message>
         <location filename="OptionsDialog.cpp" line="37"/>
         <source>Start with OS</source>
-        <translation type="unfinished"></translation>
+        <translation>随操作系统启动</translation>
     </message>
     <message>
         <location filename="OptionsDialog.cpp" line="42"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="OptionsDialog.cpp" line="47"/>
         <source>Shortcut to quick start (eg. Alt+R)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QHotkey</name>
-    <message>
-        <location filename="3rd/QHotkey/QHotkey/qhotkey.cpp" line="294"/>
-        <source>Failed to register %1. Error: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="3rd/QHotkey/QHotkey/qhotkey.cpp" line="314"/>
-        <source>Failed to unregister %1. Error: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>快速启动热键（如Alt+R)</translation>
     </message>
 </context>
 </TS>

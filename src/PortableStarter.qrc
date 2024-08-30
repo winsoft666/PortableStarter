@@ -5,6 +5,6 @@
         <file>images/logo.png</file>
         <file>images/website.png</file>
         <file>images/new.png</file>
+        <file>build/PortableStarter_zh_CN.qm</file>
     </qresource>
-    <qresource prefix="/i18n"/>
 </RCC>

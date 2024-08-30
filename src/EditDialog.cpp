@@ -53,7 +53,7 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
             this,
             tr("Select an executable file"),
             QString(),
-            tr("Executable Files (*.exe *.bat *.cmd *.ps1 *.msc)"));
+            tr("Executable Files (*.exe *.bat *.cmd *.ps1 *.msc);;All Files (*.*)"));
         if (!strPath.isEmpty()) {
             editPath_->setText(QDir::toNativeSeparators(strPath));
         }
