@@ -20,49 +20,52 @@
     </message>
     <message>
         <location filename="EditDialog.cpp" line="56"/>
-        <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc);;All Files (*.*)</source>
-        <translation>可执行文件 (*.exe *.bat *.cmd *.ps1 *.msc);;所有文件 (*.*)</translation>
+        <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;All Files (*.*)</source>
+        <oldsource>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc);;All Files (*.*)</oldsource>
+        <translation>可执行文件 (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="88"/>
+        <location filename="EditDialog.cpp" line="96"/>
         <source>Run as administrator</source>
         <translation>以管理员权限运行</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="91"/>
+        <location filename="EditDialog.cpp" line="99"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="92"/>
+        <location filename="EditDialog.cpp" line="100"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="98"/>
+        <location filename="EditDialog.cpp" line="106"/>
         <source>Application, URL or Folder:</source>
         <translation>应用程序，链接或文件夹：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="99"/>
+        <location filename="EditDialog.cpp" line="107"/>
         <source>(Support relative path, If PortableStarter is installed in X:\PortableStarter, 
 you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</source>
-        <translation>（支持相对路径，假如PortableStarter安装在X:\PortableStarter,你可以使用..\prog\prog.exe来启动位于X:\prog\prog.exe的程序）</translation>
+        <translation>（支持相对路径，假如PortableStarter安装在X:\PortableStarter,
+你可以使用..\prog\prog.exe来启动位于X:\prog\prog.exe的程序）</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="102"/>
+        <location filename="EditDialog.cpp" line="110"/>
         <source>Parameter:</source>
         <translation>参数：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="105"/>
+        <location filename="EditDialog.cpp" line="113"/>
         <source>Name:</source>
         <translation>名称：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="108"/>
-        <source>Trigger Key (Split with comma):</source>
-        <translation>触发关键字（以逗号分割）：</translation>
+        <location filename="EditDialog.cpp" line="116"/>
+        <source>Trigger Keyword (Split multiple keywords with commas):</source>
+        <oldsource>Trigger Key (Split with comma):</oldsource>
+        <translation>触发关键字（使用逗号分割多个关键字）：</translation>
     </message>
 </context>
 <context>

@@ -53,7 +53,7 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
             this,
             tr("Select an executable file"),
             QString(),
-            tr("Executable Files (*.exe *.bat *.cmd *.ps1 *.msc);;All Files (*.*)"));
+            tr("Executable Files (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;All Files (*.*)"));
         if (!strPath.isEmpty()) {
             editPath_->setText(QDir::toNativeSeparators(strPath));
         }
@@ -66,8 +66,16 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
     });
 
     connect(editPath_, &QLineEdit::textChanged, this, [this](const QString& text) {
-        if (!text.isEmpty()) {
-            // TODO
+        if (!IsUrl(text)) {
+            QFileInfo fi(text);
+            editName_->setText(fi.baseName());
+        }
+    });
+
+    connect(editName_, &QLineEdit::textChanged, this, [this](const QString& text) {
+        QList<QString> letterList;
+        if (GetStringLetters(text, letterList)) {
+            editTriggerKey_->setText(letterList.join(","));
         }
     });
 }
@@ -105,7 +113,7 @@ void EditDialog::setupUi() {
         HBox(new QLabel(tr("Name:")), Stretch()),
         editName_,
         Spacing(10),
-        HBox(new QLabel(tr("Trigger Key (Split with comma):")), Stretch()),
+        HBox(new QLabel(tr("Trigger Keyword (Split multiple keywords with commas):")), Stretch()),
         editTriggerKey_,
         Spacing(10),
 #ifdef Q_OS_WINDOWS

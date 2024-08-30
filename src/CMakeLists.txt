@@ -32,6 +32,8 @@ set(PROJECT_SOURCES
         AppDef.cpp
         Helper.h
         Helper.cpp
+        Pinyin.h
+        Pinyin.cpp
         ${TS_FILES}
 )
 
