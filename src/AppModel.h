@@ -10,6 +10,7 @@ class AppModel : public QAbstractListModel {
 
     void setFilter(const QString& filter);
     void appendApp(const AppMeta& app);
+    void removeApp(const AppMeta& app);
     AppMeta getApp(int row) const;
 
    protected:

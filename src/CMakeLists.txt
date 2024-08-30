@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
         EditDialog.cpp
         OptionsDialog.h
         OptionsDialog.cpp
+        AppVersion.h
         AppModel.h
         AppModel.cpp
         AppDelegate.h

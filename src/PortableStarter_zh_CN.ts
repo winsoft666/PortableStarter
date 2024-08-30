@@ -106,22 +106,22 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
         <translation>搜索...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="125"/>
+        <location filename="MainWindow.cpp" line="128"/>
         <source>Run as administrator</source>
         <translation>以管理员权限运行</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="136"/>
+        <location filename="MainWindow.cpp" line="139"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="145"/>
+        <location filename="MainWindow.cpp" line="148"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="273"/>
+        <location filename="MainWindow.cpp" line="286"/>
         <source>Unable to run application (%1 %2).</source>
         <translation>无法运行应用程序 （%1 %2)。</translation>
     </message>

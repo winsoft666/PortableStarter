@@ -26,6 +26,7 @@ class MainWindow : public QWidget {
     void bindSignals();
 
     void closeEvent(QCloseEvent* e) override;
+    void showEvent(QShowEvent* e) override;
     bool eventFilter(QObject* obj, QEvent* e);
 
     void runApp(const AppMeta& app);

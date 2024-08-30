@@ -51,7 +51,7 @@ void MainWindow::setupUi() {
         OptionsDialog* dlg = new OptionsDialog(this);
         dlg->open();
     });
-    trayMenu_->addAction(tr("Homepage"), [this]() { QDesktopServices::openUrl(QUrl("https://github.com/winsoft666/")); });
+    trayMenu_->addAction(tr("Homepage"), [this]() { QDesktopServices::openUrl(QUrl("https://github.com/winsoft666/PortableStarter/")); });
     trayMenu_->addAction(tr("Exit"), [this]() {
         if (QMessageBox::question(this, "PortableStarter", tr("Exit Portable Starter?")) == QMessageBox::Yes) {
             allowExit_ = true;
@@ -94,7 +94,10 @@ void MainWindow::setupUi() {
 }
 
 void MainWindow::bindSignals() {
-    connect(trayIcon_, &QSystemTrayIcon::activated, this, [this]() { this->show(); });
+    connect(trayIcon_, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason) {
+        if (reason == QSystemTrayIcon::Trigger)
+            this->show();
+    });
 
     connect(editSearch_, &QLineEdit::textChanged, this, [this](const QString& text) {
         AppModel* appModel = dynamic_cast<AppModel*>(listApp_->model());
@@ -143,7 +146,12 @@ void MainWindow::bindSignals() {
             }
         });
         popMenu->addAction(tr("Delete"), [this]() {
-
+            if (listApp_->selectionModel()->hasSelection()) {
+                if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
+                    AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                    appModel_->removeApp(app);
+                }
+            }
         });
         popMenu->exec(QCursor::pos());
         popMenu->deleteLater();
@@ -169,6 +177,11 @@ void MainWindow::closeEvent(QCloseEvent* e) {
         e->ignore();
         this->hide();
     }
+}
+
+void MainWindow::showEvent(QShowEvent* e) {
+    editSearch_->setFocus();
+    QWidget::showEvent(e);
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* e) {

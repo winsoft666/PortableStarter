@@ -38,6 +38,36 @@ void AppModel::appendApp(const AppMeta& app) {
     endInsertRows();
 }
 
+void AppModel::removeApp(const AppMeta& app) {
+    int metasIdx = -1;
+    for (int i = 0; i < metas_.size(); i++) {
+        if (metas_.at(i).path == app.path && metas_.at(i).parameter == app.parameter) {
+            metasIdx = i;
+            break;
+        }
+    }
+
+    if (metasIdx >= 0) {
+        int shownIdx = -1;
+        const AppMeta* p = &metas_.at(metasIdx);
+        for (int i = 0; i < shownMetas_.size(); i++) {
+            if (shownMetas_.at(i) == p) {
+                shownIdx = i;
+                break;
+            }
+        }
+
+        beginRemoveRows(QModelIndex(), shownIdx, shownIdx);
+
+        shownMetas_.removeAt(shownIdx);
+        metas_.removeAt(metasIdx);
+
+        saveJSON();
+
+        endRemoveRows();
+    }
+}
+
 AppMeta AppModel::getApp(int row) const {
     AppMeta app;
     if (row < shownMetas_.size())
