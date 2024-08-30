@@ -9,7 +9,7 @@ class AppModel : public QAbstractListModel {
     AppModel(QObject* parent = nullptr);
 
     void setFilter(const QString& filter);
-    void addApp(const AppMeta& app);
+    void appendApp(const AppMeta& app);
     AppMeta getApp(int row) const;
 
    protected:
@@ -24,4 +24,5 @@ class AppModel : public QAbstractListModel {
    protected:
     QString filter_;
     QList<AppMeta> metas_;
+    QList<const AppMeta*> shownMetas_;
 };

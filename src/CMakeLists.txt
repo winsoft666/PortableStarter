@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
+add_subdirectory(3rd/QHotkey)
+
 set(TS_FILES PortableStarter_zh_CN.ts)
 
 set(PROJECT_SOURCES
@@ -20,12 +22,16 @@ set(PROJECT_SOURCES
         MainWindow.h
         EditDialog.h
         EditDialog.cpp
+        OptionsDialog.h
+        OptionsDialog.cpp
         AppModel.h
         AppModel.cpp
         AppDelegate.h
         AppDelegate.cpp
         AppDef.h
         AppDef.cpp
+        Helper.h
+        Helper.cpp
         ${TS_FILES}
 )
 
@@ -57,7 +63,7 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(PortableStarter PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(PortableStarter PRIVATE Qt${QT_VERSION_MAJOR}::Widgets qhotkey)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

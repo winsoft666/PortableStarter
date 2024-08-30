@@ -21,7 +21,9 @@ int main(int argc, char* argv[]) {
             break;
         }
     }
+
     a.setWindowIcon(QIcon(":/images/logo.png"));
+
     MainWindow w;
     w.show();
     return a.exec();

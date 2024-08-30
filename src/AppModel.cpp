@@ -8,28 +8,46 @@
 
 AppModel::AppModel(QObject* parent /*= nullptr*/) :
     QAbstractListModel(parent) {
-    loadJSON();
+    if (loadJSON()) {
+        for (int i = 0; i < metas_.size(); i++) {
+            shownMetas_.append(&metas_.at(i));
+        }
+    }
 }
 
 void AppModel::setFilter(const QString& filter) {
-    filter_ = filter;
+    filter_ = filter.toLower();
+
+    beginResetModel();
+    shownMetas_.clear();
+    for (int i = 0; i < metas_.size(); i++) {
+        if (filter_.isEmpty() || metas_.at(i).triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
+            shownMetas_.append(&metas_.at(i));
+        }
+    }
+    endResetModel();
 }
 
-void AppModel::addApp(const AppMeta& app) {
+void AppModel::appendApp(const AppMeta& app) {
+    beginInsertRows(QModelIndex(), metas_.size(), metas_.size() + 1);
     metas_.append(app);
-
     saveJSON();
+    if (filter_.isEmpty() || app.triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
+        shownMetas_.append(&metas_[metas_.size() - 1]);
+    }
+    endInsertRows();
 }
 
 AppMeta AppModel::getApp(int row) const {
     AppMeta app;
-    if (row < metas_.size())
-        app = metas_[row];
+    if (row < shownMetas_.size())
+        app = *shownMetas_[row];
     return app;
 }
 
 bool AppModel::loadJSON() {
     metas_.clear();
+    shownMetas_.clear();
 
     QString jsonPath = QCoreApplication::applicationDirPath() + "/app.json";
     QFile file(jsonPath);
@@ -109,7 +127,7 @@ bool AppModel::saveJSON() {
 }
 
 int AppModel::rowCount(const QModelIndex& parent) const {
-    return metas_.size();
+    return shownMetas_.size();
 }
 
 int AppModel::columnCount(const QModelIndex& parent) const {
@@ -120,12 +138,12 @@ QVariant AppModel::data(const QModelIndex& index, int role) const {
     const int row = index.row();
     QVariant var;
     if (role == Qt::UserRole + 1) {  // icon
-        if (row < metas_.size()) {
-            var = QVariant::fromValue<QPixmap>(metas_[row].icon);
+        if (row < shownMetas_.size()) {
+            var = QVariant::fromValue<QPixmap>(shownMetas_[row]->icon);
         }
     }
     else if (role == Qt::UserRole + 2) {  // text
-        var = QVariant(QString("%1 %2 %3").arg(metas_[row].name).arg(metas_[row].path).arg(metas_[row].parameter));
+        var = QVariant(QString("%1 %2 %3").arg(shownMetas_[row]->name).arg(shownMetas_[row]->path).arg(shownMetas_[row]->parameter));
     }
     return var;
 }

@@ -4,5 +4,7 @@
         <file>images/folder.png</file>
         <file>images/logo.png</file>
         <file>images/website.png</file>
+        <file>images/new.png</file>
     </qresource>
+    <qresource prefix="/i18n"/>
 </RCC>

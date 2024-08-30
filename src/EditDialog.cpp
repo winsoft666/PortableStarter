@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFileIconProvider>
+#include "Helper.h"
 #include "DSLLayout.hpp"
 using namespace tk;
 
@@ -9,9 +10,10 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
     QDialog(parent) {
     if (app)
         app_ = *app;
+
     setupUi();
     this->setWindowTitle(app_.name.isEmpty() ? tr("Add") : tr("Edit"));
-    this->setFixedSize(500, 260);
+    this->resize(500, 320);
 
     connect(btnCancel_, &QPushButton::clicked, this, [this]() { done(0); });
 
@@ -22,7 +24,7 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
         app_.triggerKey = editTriggerKey_->text().trimmed();
 
         if (!app_.path.isEmpty()) {
-            if (app_.path.startsWith("http://") || app_.path.startsWith("https://")) {
+            if (IsUrl(app_.path)) {
                 app_.icon = QPixmap(":/images/website.png");
             }
             else {
@@ -78,29 +80,37 @@ AppMeta EditDialog::getAppMeta() const {
 }
 
 void EditDialog::setupUi() {
-    editPath_ = new QLineEdit();
-    editParameter_ = new QLineEdit();
-    editName_ = new QLineEdit();
-    editTriggerKey_ = new QLineEdit();
+    editPath_ = new QLineEdit(app_.path);
+    editParameter_ = new QLineEdit(app_.parameter);
+    editName_ = new QLineEdit(app_.name);
+    editTriggerKey_ = new QLineEdit(app_.triggerKey);
 
     chkRunAsAdmin_ = new QCheckBox(tr("Run as administrator"));
+    chkRunAsAdmin_->setCheckState(app_.runAsAdmin ? Qt::Checked : Qt::Unchecked);
 
     btnOK_ = new QPushButton(tr("OK"));
     btnCancel_ = new QPushButton(tr("Cancel"));
 
-    btnBrowserExe_ = new QPushButton("...");
-    btnBrowserFolder_ = new QPushButton("F");
+    btnBrowserExe_ = new QPushButton(QIcon(":/images/exe.png"), "");
+    btnBrowserFolder_ = new QPushButton(QIcon(":/images/folder.png"), "");
 
     auto root = VBox(
         HBox(new QLabel(tr("Application, URL or Folder:")), Stretch()),
+        HBox(new QLabel(tr("(Support relative path, If PortableStarter is installed in X:\\PortableStarter, \nyou can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe)")), Stretch()),
         HBox(editPath_, btnBrowserExe_, btnBrowserFolder_),
+        Spacing(10),
         HBox(new QLabel(tr("Parameter:")), Stretch()),
         editParameter_,
+        Spacing(10),
         HBox(new QLabel(tr("Name:")), Stretch()),
         editName_,
+        Spacing(10),
         HBox(new QLabel(tr("Trigger Key (Split with comma):")), Stretch()),
         editTriggerKey_,
+        Spacing(10),
+#ifdef Q_OS_WINDOWS
         HBox(chkRunAsAdmin_, Stretch()),
+#endif
         Stretch(),
         HBox(Stretch(), btnOK_, btnCancel_, Stretch()));
     this->setLayout(root);
