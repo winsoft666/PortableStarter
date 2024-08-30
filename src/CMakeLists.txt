@@ -16,6 +16,10 @@ add_subdirectory(3rd/QHotkey)
 
 set(TS_FILES PortableStarter_zh_CN.ts)
 
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+  set(RC_FILES Resource.rc)
+endif()
+
 set(PROJECT_SOURCES
         main.cpp
         MainWindow.cpp
@@ -35,6 +39,7 @@ set(PROJECT_SOURCES
         Pinyin.h
         Pinyin.cpp
         ${TS_FILES}
+        ${RC_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
