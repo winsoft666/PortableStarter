@@ -151,7 +151,7 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
     <message>
         <location filename="OptionsDialog.cpp" line="55"/>
         <source>Show path and parameter in list</source>
-        <translation type="unfinished"></translation>
+        <translation>在列表中显示路径和参数</translation>
     </message>
     <message>
         <location filename="OptionsDialog.cpp" line="60"/>
