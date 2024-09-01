@@ -20,7 +20,6 @@ using namespace tk;
 
 MainWindow::MainWindow(QWidget* parent) :
     QWidget(parent) {
-    resize(600, 300);
 
     setupUi();
     bindSignals();
@@ -36,6 +35,7 @@ MainWindow::MainWindow(QWidget* parent) :
     }
 
     selectFirstRow();
+
 }
 
 MainWindow::~MainWindow() {}
@@ -61,6 +61,7 @@ void MainWindow::setupUi() {
 
     trayIcon_ = new QSystemTrayIcon();
     trayIcon_->setIcon(QIcon(":/images/logo.png"));
+    trayIcon_->setToolTip("Portable Starter");
     trayIcon_->setContextMenu(trayMenu_);
     trayIcon_->show();
 
@@ -84,6 +85,7 @@ void MainWindow::setupUi() {
 
     btnNew_ = new QPushButton(QIcon(":/images/new.png"), "");
     btnNew_->setObjectName("btnNew");
+    btnNew_->setShortcut(QKeySequence("Ctrl+N"));
 
     auto root = VBox(
         HBox(editSearch_, btnNew_),
@@ -121,6 +123,10 @@ void MainWindow::bindSignals() {
         });
         dlg->open();
     });
+
+    // QListView
+    //
+    connect(appModel_, &QAbstractItemModel::modelReset, this, &MainWindow::selectFirstRow);
 
     connect(listApp_, &QListView::customContextMenuRequested, this, [this](const QPoint& pt) {
         QMenu* popMenu = new QMenu(this);
@@ -166,7 +172,6 @@ void MainWindow::bindSignals() {
         }
     });
 
-    connect(appModel_, &QAbstractItemModel::modelReset, this, &MainWindow::selectFirstRow);
 }
 
 void MainWindow::closeEvent(QCloseEvent* e) {
@@ -184,13 +189,24 @@ void MainWindow::showEvent(QShowEvent* e) {
     QWidget::showEvent(e);
 }
 
+void MainWindow::moveEvent(QMoveEvent* e) {
+    recordWindowGeometry();
+    QWidget::moveEvent(e);
+}
+
+void MainWindow::resizeEvent(QResizeEvent* e) {
+    recordWindowGeometry();
+    QWidget::resizeEvent(e);
+}
+
 bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
     if (obj != editSearch_ && obj != listApp_) {
         return false;
     }
+    qDebug() << obj << e->type();
 
     QEvent::Type t = e->type();
-    if (t == QEvent::KeyRelease) {
+    if (t == QEvent::KeyPress) {
         QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(e);
         int key = keyEvent->key();
         switch (key) {
@@ -291,5 +307,12 @@ void MainWindow::selectFirstRow() {
     const int rowCount = listApp_->model()->rowCount();
     if (rowCount > 0) {
         listApp_->setCurrentIndex(listApp_->model()->index(0, 0));
+    }
+}
+
+void MainWindow::recordWindowGeometry() {
+    QSettings& settings = GetSettings();
+    if (settings.value("RememberWindowPosAndSize").toInt() == 1) {
+        settings.setValue("WindowGeometry", this->geometry());
     }
 }

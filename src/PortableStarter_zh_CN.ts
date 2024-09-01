@@ -71,7 +71,7 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="34"/>
+        <location filename="MainWindow.cpp" line="33"/>
         <source>Failed to register quick start hotkey!</source>
         <translation>注册快速启动热键失败！</translation>
     </message>
@@ -98,30 +98,30 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
     <message>
         <location filename="MainWindow.cpp" line="56"/>
         <source>Exit Portable Starter?</source>
-        <translation>是否退出Portable Starter?</translation>
+        <translation>确定要退出Portable Starter吗？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="71"/>
+        <location filename="MainWindow.cpp" line="72"/>
         <source>Search...</source>
         <translation>搜索...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="128"/>
+        <location filename="MainWindow.cpp" line="134"/>
         <source>Run as administrator</source>
         <translation>以管理员权限运行</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="139"/>
+        <location filename="MainWindow.cpp" line="145"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="148"/>
+        <location filename="MainWindow.cpp" line="154"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="286"/>
+        <location filename="MainWindow.cpp" line="302"/>
         <source>Unable to run application (%1 %2).</source>
         <translation>无法运行应用程序 （%1 %2)。</translation>
     </message>
@@ -129,27 +129,37 @@ you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe)</so
 <context>
     <name>OptionsDialog</name>
     <message>
-        <location filename="OptionsDialog.cpp" line="27"/>
+        <location filename="OptionsDialog.cpp" line="39"/>
         <source>Failed to register quick start hotkey!</source>
         <translation>注册快速启动热键失败！</translation>
     </message>
     <message>
-        <location filename="OptionsDialog.cpp" line="33"/>
+        <location filename="OptionsDialog.cpp" line="45"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="OptionsDialog.cpp" line="37"/>
+        <location filename="OptionsDialog.cpp" line="49"/>
         <source>Start with OS</source>
         <translation>随操作系统启动</translation>
     </message>
     <message>
-        <location filename="OptionsDialog.cpp" line="42"/>
+        <location filename="OptionsDialog.cpp" line="52"/>
+        <source>Remember window position and size</source>
+        <translation>记忆窗口位置和大小</translation>
+    </message>
+    <message>
+        <location filename="OptionsDialog.cpp" line="55"/>
+        <source>Show path and parameter in list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OptionsDialog.cpp" line="60"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="OptionsDialog.cpp" line="47"/>
+        <location filename="OptionsDialog.cpp" line="67"/>
         <source>Shortcut to quick start (eg. Alt+R)</source>
         <translation>快速启动热键（如Alt+R)</translation>
     </message>

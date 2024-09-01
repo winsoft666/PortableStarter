@@ -27,12 +27,15 @@ class MainWindow : public QWidget {
 
     void closeEvent(QCloseEvent* e) override;
     void showEvent(QShowEvent* e) override;
+    void moveEvent(QMoveEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
     bool eventFilter(QObject* obj, QEvent* e);
 
     void runApp(const AppMeta& app);
 
    protected slots:
     void selectFirstRow();
+    void recordWindowGeometry();
 
    protected:
     bool allowExit_ = false;

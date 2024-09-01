@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include "Helper.h"
 
 int main(int argc, char* argv[]) {
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -25,6 +26,19 @@ int main(int argc, char* argv[]) {
     a.setWindowIcon(QIcon(":/images/logo.png"));
 
     MainWindow w;
+    QSettings& settings = GetSettings();
+    QRect geo;
+    if (settings.value("RememberWindowPosAndSize").toInt() == 1) {
+        geo = settings.value("WindowGeometry").toRect();
+    }
+
+    if (geo.isNull()) {
+        w.resize(600, 300);
+    }
+    else {
+        w.setGeometry(geo);
+    }
     w.show();
+
     return a.exec();
 }

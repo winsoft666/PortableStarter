@@ -172,8 +172,11 @@ QVariant AppModel::data(const QModelIndex& index, int role) const {
             var = QVariant::fromValue<QPixmap>(shownMetas_[row]->icon);
         }
     }
-    else if (role == Qt::UserRole + 2) {  // text
-        var = QVariant(QString("%1 %2 %3").arg(shownMetas_[row]->name).arg(shownMetas_[row]->path).arg(shownMetas_[row]->parameter));
+    else if (role == Qt::UserRole + 2) {  // name
+        var = QVariant(shownMetas_[row]->name);
+    }
+    else if (role == Qt::UserRole + 3) { // path + parameter
+        var = QVariant(QString("%1 %2").arg(shownMetas_[row]->path).arg(shownMetas_[row]->parameter));
     }
     return var;
 }

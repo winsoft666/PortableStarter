@@ -16,6 +16,8 @@ class OptionsDialog : public QDialog {
 
    protected:
     QCheckBox* chkStartWithOS_ = nullptr;
+    QCheckBox* chkRememberPosSize_ = nullptr;
+    QCheckBox* chkShowPathAndParam_ = nullptr;
     QKeySequenceEdit* keyEditQuickStart_ = nullptr;
     QPushButton* btnOK_ = nullptr;
 };
