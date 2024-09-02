@@ -20,7 +20,6 @@ using namespace tk;
 
 MainWindow::MainWindow(QWidget* parent) :
     QWidget(parent) {
-
     setupUi();
     bindSignals();
 
@@ -35,7 +34,6 @@ MainWindow::MainWindow(QWidget* parent) :
     }
 
     selectFirstRow();
-
 }
 
 MainWindow::~MainWindow() {}
@@ -102,10 +100,7 @@ void MainWindow::bindSignals() {
     });
 
     connect(editSearch_, &QLineEdit::textChanged, this, [this](const QString& text) {
-        AppModel* appModel = dynamic_cast<AppModel*>(listApp_->model());
-        if (appModel) {
-            appModel->setFilter(text);
-        }
+        appModel_->setFilter(text);
     });
 
     connect(btnNew_, &QPushButton::clicked, this, [this]() {
@@ -113,10 +108,7 @@ void MainWindow::bindSignals() {
         connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
             if (result == 100) {
                 AppMeta app = dlg->getAppMeta();
-                AppModel* appModel = dynamic_cast<AppModel*>(listApp_->model());
-                if (appModel) {
-                    appModel->appendApp(app);
-                }
+                appModel_->appendApp(app);
             }
 
             dlg->deleteLater();
@@ -130,35 +122,48 @@ void MainWindow::bindSignals() {
 
     connect(listApp_, &QListView::customContextMenuRequested, this, [this](const QPoint& pt) {
         QMenu* popMenu = new QMenu(this);
-#ifdef Q_OS_WINDOWS
-        popMenu->addAction(tr("Run as administrator"), [this]() {
+        popMenu->addAction(tr("Run"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
-                    AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                    app.runAsAdmin = true;
-                    runApp(app);
+                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                if (runApp(app)) {
+                    this->hide();
+                }
+            }
+        });
+
+#ifdef Q_OS_WINDOWS
+        popMenu->addAction(tr("Run as administrator (&R)"), [this]() {
+            if (listApp_->selectionModel()->hasSelection()) {
+                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                app.runAsAdmin = true;
+                if (runApp(app)) {
+                    this->hide();
                 }
             }
         });
 #else
 #endif
-        popMenu->addAction(tr("Edit"), [this]() {
+        popMenu->addAction(tr("Edit (&E)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
-                    AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                    EditDialog* dlg = new EditDialog(&app, this);
-                    dlg->open();
-                }
+                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                EditDialog* dlg = new EditDialog(&app, this);
+                connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
+                    if (result == 100) {
+                        AppMeta app = dlg->getAppMeta();
+                        appModel_->updateApp(app);
+                    }
+                });
+                dlg->open();
             }
         });
-        popMenu->addAction(tr("Delete"), [this]() {
+
+        popMenu->addAction(tr("Delete (&D)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
-                    AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                    appModel_->removeApp(app);
-                }
+                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                appModel_->removeApp(app);
             }
         });
+
         popMenu->exec(QCursor::pos());
         popMenu->deleteLater();
     });
@@ -171,7 +176,6 @@ void MainWindow::bindSignals() {
             this->show();
         }
     });
-
 }
 
 void MainWindow::closeEvent(QCloseEvent* e) {
@@ -203,7 +207,6 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
     if (obj != editSearch_ && obj != listApp_) {
         return false;
     }
-    qDebug() << obj << e->type();
 
     QEvent::Type t = e->type();
     if (t == QEvent::KeyPress) {
@@ -215,7 +218,9 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
                 if (listApp_->selectionModel()->hasSelection()) {
                     if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
                         AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                        runApp(app);
+                        if (runApp(app)) {
+                            this->hide();
+                        }
                     }
                 }
                 break;
@@ -250,7 +255,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
     return false;
 }
 
-void MainWindow::runApp(const AppMeta& app) {
+bool MainWindow::runApp(const AppMeta& app) {
     bool result = false;
     bool isUrl = false;
     QString path;
@@ -301,6 +306,8 @@ void MainWindow::runApp(const AppMeta& app) {
     if (!result) {
         QMessageBox::critical(this, "PortableStarter", tr("Unable to run application (%1 %2).").arg(path).arg(app.parameter));
     }
+
+    return result;
 }
 
 void MainWindow::selectFirstRow() {

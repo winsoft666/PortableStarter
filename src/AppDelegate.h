@@ -1,4 +1,6 @@
-#pragma once
+#ifndef APP_DELEGATE_H_
+#define APP_DELEGATE_H_
+
 #include <QStyledItemDelegate>
 
 class AppDelegate : public QStyledItemDelegate {
@@ -10,3 +12,4 @@ class AppDelegate : public QStyledItemDelegate {
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
+#endif  // !APP_DELEGATE_H_

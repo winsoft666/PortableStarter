@@ -38,6 +38,15 @@ void AppModel::appendApp(const AppMeta& app) {
     endInsertRows();
 }
 
+void AppModel::updateApp(const AppMeta& app) {
+    for (QList<AppMeta>::iterator it = metas_.begin(); it != metas_.end(); it++) {
+        if ((*it).id == app.id) {
+            *it = app;
+            break;
+        }
+    }
+}
+
 void AppModel::removeApp(const AppMeta& app) {
     int metasIdx = -1;
     for (int i = 0; i < metas_.size(); i++) {
@@ -102,6 +111,7 @@ bool AppModel::loadJSON() {
             continue;
 
         AppMeta meta;
+        meta.id = obj["id"].toString();
         meta.runAsAdmin = obj["runAsAdmin"].toBool();
         meta.path = obj["path"].toString();
         meta.parameter = obj["parameter"].toString();
@@ -119,6 +129,7 @@ bool AppModel::saveJSON() {
     QJsonArray root;
     for (int i = 0; i < metas_.size(); i++) {
         QJsonObject obj;
+        obj["id"] = metas_[i].id;
         obj["runAsAdmin"] = metas_[i].runAsAdmin;
         obj["path"] = metas_[i].path;
         obj["parameter"] = metas_[i].parameter;
@@ -175,7 +186,7 @@ QVariant AppModel::data(const QModelIndex& index, int role) const {
     else if (role == Qt::UserRole + 2) {  // name
         var = QVariant(shownMetas_[row]->name);
     }
-    else if (role == Qt::UserRole + 3) { // path + parameter
+    else if (role == Qt::UserRole + 3) {  // path + parameter
         var = QVariant(QString("%1 %2").arg(shownMetas_[row]->path).arg(shownMetas_[row]->parameter));
     }
     return var;

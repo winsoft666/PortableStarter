@@ -1,4 +1,6 @@
-#pragma once
+#ifndef OPTIONS_DIALOG_H_
+#define OPTIONS_DIALOG_H_
+
 #include <QDialog>
 #include <QCheckBox>
 #include <QLabel>
@@ -21,3 +23,4 @@ class OptionsDialog : public QDialog {
     QKeySequenceEdit* keyEditQuickStart_ = nullptr;
     QPushButton* btnOK_ = nullptr;
 };
+#endif  // !OPTIONS_DIALOG_H_

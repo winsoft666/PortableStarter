@@ -1,4 +1,6 @@
-#pragma once
+#ifndef APP_MODEL_H_
+#define APP_MODEL_H_
+
 #include <QList>
 #include <QAbstractListModel>
 #include "AppDef.h"
@@ -10,6 +12,7 @@ class AppModel : public QAbstractListModel {
 
     void setFilter(const QString& filter);
     void appendApp(const AppMeta& app);
+    void updateApp(const AppMeta& app);
     void removeApp(const AppMeta& app);
     AppMeta getApp(int row) const;
 
@@ -27,3 +30,4 @@ class AppModel : public QAbstractListModel {
     QList<AppMeta> metas_;
     QList<const AppMeta*> shownMetas_;
 };
+#endif // !APP_MODEL_H_

@@ -2,6 +2,8 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFileIconProvider>
+#include <QCoreApplication>
+#include <QUuid>
 #include "Helper.h"
 #include "DSLLayout.hpp"
 using namespace tk;
@@ -13,11 +15,14 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
 
     setupUi();
     this->setWindowTitle(app_.name.isEmpty() ? tr("Add") : tr("Edit"));
-    this->resize(500, 320);
+    this->resize(500, 360);
 
     connect(btnCancel_, &QPushButton::clicked, this, [this]() { done(0); });
 
     connect(btnOK_, &QPushButton::clicked, this, [this]() {
+        if (app_.id.isEmpty()) {
+            app_.id = QUuid::createUuid().toString(QUuid::Id128);
+        }
         app_.path = editPath_->text().trimmed();
         app_.parameter = editParameter_->text().trimmed();
         app_.name = editName_->text().trimmed();
@@ -65,6 +70,14 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
             editPath_->setText(QDir::toNativeSeparators(strPath));
     });
 
+    connect(btnToRelativePath_, &QPushButton::clicked, this, [this]() {
+        QString strPath = editPath_->text().trimmed();
+        if (!QDir::isRelativePath(strPath)) {
+            QDir dir(QCoreApplication::applicationDirPath());
+            editPath_->setText(QDir::toNativeSeparators(dir.relativeFilePath(strPath)));
+        }
+    });
+
     connect(editPath_, &QLineEdit::textChanged, this, [this](const QString& text) {
         if (!IsUrl(text)) {
             QFileInfo fi(text);
@@ -101,11 +114,13 @@ void EditDialog::setupUi() {
 
     btnBrowserExe_ = new QPushButton(QIcon(":/images/exe.png"), "");
     btnBrowserFolder_ = new QPushButton(QIcon(":/images/folder.png"), "");
+    btnToRelativePath_ = new QPushButton(tr("Relative Path"));
 
     auto root = VBox(
         HBox(new QLabel(tr("Application, URL or Folder:")), Stretch()),
-        HBox(new QLabel(tr("(Support relative path, If PortableStarter is installed in X:\\PortableStarter, \nyou can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe)")), Stretch()),
+        HBox(new QLabel(tr("  Support relative path, If PortableStarter is installed in X:\\PortableStarter, \n  you can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe")), Stretch()),
         HBox(editPath_, btnBrowserExe_, btnBrowserFolder_),
+        HBox(Stretch(), btnToRelativePath_),
         Spacing(10),
         HBox(new QLabel(tr("Parameter:")), Stretch()),
         editParameter_,

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef EDIT_DIALOG_H_
+#define EDIT_DIALOG_H_
+
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
@@ -25,9 +27,11 @@ class EditDialog : public QDialog {
     QLineEdit* editTriggerKey_ = nullptr;
     QCheckBox* chkRunAsAdmin_ = nullptr;
 
+    QPushButton* btnToRelativePath_ = nullptr;
     QPushButton* btnBrowserExe_ = nullptr;
     QPushButton* btnBrowserFolder_ = nullptr;
 
     QPushButton* btnOK_ = nullptr;
     QPushButton* btnCancel_ = nullptr;
 };
+#endif // !EDIT_DIALOG_H_
