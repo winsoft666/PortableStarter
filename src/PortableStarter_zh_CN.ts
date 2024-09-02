@@ -4,69 +4,69 @@
 <context>
     <name>EditDialog</name>
     <message>
-        <location filename="EditDialog.cpp" line="17"/>
+        <location filename="EditDialog.cpp" line="16"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="17"/>
+        <location filename="EditDialog.cpp" line="16"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="59"/>
+        <location filename="EditDialog.cpp" line="58"/>
         <source>Select an executable file</source>
         <translation>选择一个可执行文件</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="61"/>
+        <location filename="EditDialog.cpp" line="60"/>
         <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;All Files (*.*)</source>
         <translation>可执行文件 (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="109"/>
+        <location filename="EditDialog.cpp" line="108"/>
         <source>Run as administrator</source>
         <translation>以管理员权限运行</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="112"/>
+        <location filename="EditDialog.cpp" line="111"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="113"/>
+        <location filename="EditDialog.cpp" line="112"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="117"/>
+        <location filename="EditDialog.cpp" line="116"/>
         <source>Relative Path</source>
         <translation>相对路径</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="120"/>
+        <location filename="EditDialog.cpp" line="119"/>
         <source>Application, URL or Folder:</source>
         <translation>应用程序，链接或文件夹：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="121"/>
+        <location filename="EditDialog.cpp" line="120"/>
         <source>  Support relative path, If PortableStarter is installed in X:\PortableStarter, 
   you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe</source>
         <translation>  支持相对路径，假如PortableStarter安装在X:\PortableStarter,
   你可以使用..\prog\prog.exe来启动位于X:\prog\prog.exe的程序</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="125"/>
+        <location filename="EditDialog.cpp" line="124"/>
         <source>Parameter:</source>
         <translation>参数：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="128"/>
+        <location filename="EditDialog.cpp" line="127"/>
         <source>Name:</source>
         <translation>名称：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="131"/>
+        <location filename="EditDialog.cpp" line="130"/>
         <source>Trigger Keyword (Split multiple keywords with commas):</source>
         <translation>触发关键字（使用逗号分割多个关键字）：</translation>
     </message>
@@ -113,22 +113,22 @@
         <translation>运行</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="137"/>
+        <location filename="MainWindow.cpp" line="139"/>
         <source>Run as administrator (&amp;R)</source>
         <translation>以管理员权限运行 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="148"/>
+        <location filename="MainWindow.cpp" line="151"/>
         <source>Edit (&amp;E)</source>
         <translation>编辑 (&amp;E)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="162"/>
+        <location filename="MainWindow.cpp" line="165"/>
         <source>Delete (&amp;D)</source>
         <translation>删除 (&amp;D)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="309"/>
+        <location filename="MainWindow.cpp" line="314"/>
         <source>Unable to run application (%1 %2).</source>
         <translation>无法启动应用程序 (%1 %2)。</translation>
     </message>

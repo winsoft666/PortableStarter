@@ -3,48 +3,47 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QCoreApplication>
-#include <QUuid>
+
 #include "Helper.h"
 #include "DSLLayout.hpp"
 using namespace tk;
 
-EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
-    QDialog(parent) {
-    if (app)
-        app_ = *app;
-
+EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nullptr*/) :
+    QDialog(parent),
+    app_(app) {
     setupUi();
-    this->setWindowTitle(app_.name.isEmpty() ? tr("Add") : tr("Edit"));
+
+    this->setWindowTitle(app_ == nullptr ? tr("Add") : tr("Edit"));
     this->resize(500, 360);
 
     connect(btnCancel_, &QPushButton::clicked, this, [this]() { done(0); });
 
     connect(btnOK_, &QPushButton::clicked, this, [this]() {
-        if (app_.id.isEmpty()) {
-            app_.id = QUuid::createUuid().toString(QUuid::Id128);
+        if (!app_) {
+            app_ = QSharedPointer<AppMeta>::create();
         }
-        app_.path = editPath_->text().trimmed();
-        app_.parameter = editParameter_->text().trimmed();
-        app_.name = editName_->text().trimmed();
-        app_.triggerKey = editTriggerKey_->text().trimmed();
+        app_->path = editPath_->text().trimmed();
+        app_->parameter = editParameter_->text().trimmed();
+        app_->name = editName_->text().trimmed();
+        app_->triggerKey = editTriggerKey_->text().trimmed();
 
-        if (!app_.path.isEmpty()) {
-            if (IsUrl(app_.path)) {
-                app_.icon = QPixmap(":/images/website.png");
+        if (!app_->path.isEmpty()) {
+            if (IsUrl(app_->path)) {
+                app_->icon = QPixmap(":/images/website.png");
             }
             else {
-                QFileInfo fi(app_.path);
+                QFileInfo fi(app_->path);
                 if (fi.isDir()) {
-                    app_.icon = QPixmap(":/images/folder.png");
+                    app_->icon = QPixmap(":/images/folder.png");
                 }
                 else if (fi.isFile()) {
                     QFileIconProvider iconProvider;
                     QIcon ico = iconProvider.icon(fi);
                     if (ico.isNull()) {
-                        app_.icon = QPixmap(":/images/exe.png");
+                        app_->icon = QPixmap(":/images/exe.png");
                     }
                     else {
-                        app_.icon = ico.pixmap(48, 48);
+                        app_->icon = ico.pixmap(48, 48);
                     }
                 }
             }
@@ -96,18 +95,18 @@ EditDialog::EditDialog(const AppMeta* app, QWidget* parent /*= nullptr*/) :
 EditDialog::~EditDialog() {
 }
 
-AppMeta EditDialog::getAppMeta() const {
+QSharedPointer<AppMeta> EditDialog::getAppMeta() const {
     return app_;
 }
 
 void EditDialog::setupUi() {
-    editPath_ = new QLineEdit(app_.path);
-    editParameter_ = new QLineEdit(app_.parameter);
-    editName_ = new QLineEdit(app_.name);
-    editTriggerKey_ = new QLineEdit(app_.triggerKey);
+    editPath_ = new QLineEdit(app_ ? app_->path : "");
+    editParameter_ = new QLineEdit(app_ ? app_->parameter : "");
+    editName_ = new QLineEdit(app_ ? app_->name : "");
+    editTriggerKey_ = new QLineEdit(app_ ? app_->triggerKey : "");
 
     chkRunAsAdmin_ = new QCheckBox(tr("Run as administrator"));
-    chkRunAsAdmin_->setCheckState(app_.runAsAdmin ? Qt::Checked : Qt::Unchecked);
+    chkRunAsAdmin_->setCheckState((app_ && app_->runAsAdmin) ? Qt::Checked : Qt::Unchecked);
 
     btnOK_ = new QPushButton(tr("OK"));
     btnCancel_ = new QPushButton(tr("Cancel"));

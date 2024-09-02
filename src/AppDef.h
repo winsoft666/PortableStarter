@@ -1,7 +1,8 @@
 #ifndef APP_DEF_H_
 #define APP_DEF_H_
-#pragma once
+
 #include <QPixmap>
+#include <QUuid>
 
 struct AppMeta {
     QString id;
@@ -11,5 +12,9 @@ struct AppMeta {
     QString name;
     QString triggerKey;
     QPixmap icon;
+
+    AppMeta() {
+        id = QUuid::createUuid().toString(QUuid::Id128);
+    }
 };
 #endif  // !APP_DEF_H_

@@ -9,8 +9,8 @@
 AppModel::AppModel(QObject* parent /*= nullptr*/) :
     QAbstractListModel(parent) {
     if (loadJSON()) {
-        for (int i = 0; i < metas_.size(); i++) {
-            shownMetas_.append(&metas_.at(i));
+        for (auto it = metas_.begin(); it != metas_.end(); ++it) {
+            shownMetas_.append(*it);
         }
     }
 }
@@ -20,53 +20,42 @@ void AppModel::setFilter(const QString& filter) {
 
     beginResetModel();
     shownMetas_.clear();
-    for (int i = 0; i < metas_.size(); i++) {
-        if (filter_.isEmpty() || metas_.at(i).triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
-            shownMetas_.append(&metas_.at(i));
+    for (auto it = metas_.begin(); it != metas_.end(); ++it) {
+        if (filter_.isEmpty() || (*it)->triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
+            shownMetas_.append(*it);
         }
     }
     endResetModel();
 }
 
-void AppModel::appendApp(const AppMeta& app) {
+void AppModel::appendApp(const QSharedPointer<AppMeta>& app) {
     beginInsertRows(QModelIndex(), metas_.size(), metas_.size() + 1);
     metas_.append(app);
     saveJSON();
-    if (filter_.isEmpty() || app.triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
-        shownMetas_.append(&metas_[metas_.size() - 1]);
+    if (filter_.isEmpty() || app->triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
+        shownMetas_.append(app);
     }
     endInsertRows();
 }
 
-void AppModel::updateApp(const AppMeta& app) {
-    for (QList<AppMeta>::iterator it = metas_.begin(); it != metas_.end(); it++) {
-        if ((*it).id == app.id) {
-            *it = app;
-            break;
-        }
-    }
-}
-
-void AppModel::removeApp(const AppMeta& app) {
-    int metasIdx = -1;
-    for (int i = 0; i < metas_.size(); i++) {
-        if (metas_.at(i).path == app.path && metas_.at(i).parameter == app.parameter) {
-            metasIdx = i;
+void AppModel::removeApp(const QSharedPointer<AppMeta>& app) {
+    int shownIdx = -1;
+    for (int i = 0; i < shownMetas_.size(); i++) {
+        if (shownMetas_.at(i)->id == app->id) {
+            shownIdx = i;
             break;
         }
     }
 
-    if (metasIdx >= 0) {
-        int shownIdx = -1;
-        const AppMeta* p = &metas_.at(metasIdx);
-        for (int i = 0; i < shownMetas_.size(); i++) {
-            if (shownMetas_.at(i) == p) {
-                shownIdx = i;
+    if (shownIdx >= 0) {
+        beginRemoveRows(QModelIndex(), shownIdx, shownIdx);
+        int metasIdx = -1;
+        for (int i = 0; i < metas_.size(); i++) {
+            if (metas_.at(i)->id == app->id) {
+                metasIdx = i;
                 break;
             }
         }
-
-        beginRemoveRows(QModelIndex(), shownIdx, shownIdx);
 
         shownMetas_.removeAt(shownIdx);
         metas_.removeAt(metasIdx);
@@ -77,11 +66,14 @@ void AppModel::removeApp(const AppMeta& app) {
     }
 }
 
-AppMeta AppModel::getApp(int row) const {
-    AppMeta app;
+void AppModel::flush() {
+    saveJSON();
+}
+
+QSharedPointer<AppMeta> AppModel::getApp(int row) {
     if (row < shownMetas_.size())
-        app = *shownMetas_[row];
-    return app;
+        return shownMetas_[row];
+    return nullptr;
 }
 
 bool AppModel::loadJSON() {
@@ -110,14 +102,14 @@ bool AppModel::loadJSON() {
         if (obj.isEmpty())
             continue;
 
-        AppMeta meta;
-        meta.id = obj["id"].toString();
-        meta.runAsAdmin = obj["runAsAdmin"].toBool();
-        meta.path = obj["path"].toString();
-        meta.parameter = obj["parameter"].toString();
-        meta.name = obj["name"].toString();
-        meta.triggerKey = obj["triggerKey"].toString();
-        meta.icon.loadFromData(QByteArray::fromBase64(obj["icon"].toString().toUtf8()), "PNG");
+        QSharedPointer<AppMeta> meta = QSharedPointer<AppMeta>::create();
+        meta->id = obj["id"].toString();
+        meta->runAsAdmin = obj["runAsAdmin"].toBool();
+        meta->path = obj["path"].toString();
+        meta->parameter = obj["parameter"].toString();
+        meta->name = obj["name"].toString();
+        meta->triggerKey = obj["triggerKey"].toString();
+        meta->icon.loadFromData(QByteArray::fromBase64(obj["icon"].toString().toUtf8()), "PNG");
 
         metas_.append(meta);
     }
@@ -129,18 +121,18 @@ bool AppModel::saveJSON() {
     QJsonArray root;
     for (int i = 0; i < metas_.size(); i++) {
         QJsonObject obj;
-        obj["id"] = metas_[i].id;
-        obj["runAsAdmin"] = metas_[i].runAsAdmin;
-        obj["path"] = metas_[i].path;
-        obj["parameter"] = metas_[i].parameter;
-        obj["name"] = metas_[i].name;
-        obj["triggerKey"] = metas_[i].triggerKey;
+        obj["id"] = metas_[i]->id;
+        obj["runAsAdmin"] = metas_[i]->runAsAdmin;
+        obj["path"] = metas_[i]->path;
+        obj["parameter"] = metas_[i]->parameter;
+        obj["name"] = metas_[i]->name;
+        obj["triggerKey"] = metas_[i]->triggerKey;
 
         QByteArray iconByteArray;
-        if (!metas_[i].icon.isNull()) {
+        if (!metas_[i]->icon.isNull()) {
             QBuffer iconBuffer(&iconByteArray);
             iconBuffer.open(QIODevice::WriteOnly);
-            metas_[i].icon.save(&iconBuffer, "PNG");
+            metas_[i]->icon.save(&iconBuffer, "PNG");
         }
 
         obj["icon"] = QString::fromUtf8(iconByteArray.toBase64());

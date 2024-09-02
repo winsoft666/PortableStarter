@@ -10,11 +10,14 @@ class AppModel : public QAbstractListModel {
    public:
     AppModel(QObject* parent = nullptr);
 
+   public slots:
     void setFilter(const QString& filter);
-    void appendApp(const AppMeta& app);
-    void updateApp(const AppMeta& app);
-    void removeApp(const AppMeta& app);
-    AppMeta getApp(int row) const;
+    void appendApp(const QSharedPointer<AppMeta>& app);
+    void removeApp(const QSharedPointer<AppMeta>& app);
+    void flush();
+
+   public:
+    QSharedPointer<AppMeta> getApp(int row);
 
    protected:
     bool loadJSON();
@@ -27,7 +30,7 @@ class AppModel : public QAbstractListModel {
 
    protected:
     QString filter_;
-    QList<AppMeta> metas_;
-    QList<const AppMeta*> shownMetas_;
+    QList<QSharedPointer<AppMeta>> metas_;
+    QList<QSharedPointer<AppMeta>> shownMetas_;
 };
-#endif // !APP_MODEL_H_
+#endif  // !APP_MODEL_H_

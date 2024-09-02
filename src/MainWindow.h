@@ -31,7 +31,7 @@ class MainWindow : public QWidget {
     void resizeEvent(QResizeEvent* e) override;
     bool eventFilter(QObject* obj, QEvent* e);
 
-    bool runApp(const AppMeta& app);
+    bool runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin = false);
 
    protected slots:
     void selectFirstRow();

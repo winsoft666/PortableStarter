@@ -43,7 +43,7 @@ bool MainWindow::setQuickStartHotkey(QString hotkey) {
 }
 
 void MainWindow::setupUi() {
-    setWindowTitle(QString("PortableStarter %1").arg(APP_VERSION));
+    setWindowTitle("PortableStarter");
 
     trayMenu_ = new QMenu();
     trayMenu_->addAction(QString("PortableStarter %1").arg(APP_VERSION), [this]() { this->show(); });
@@ -109,7 +109,7 @@ void MainWindow::bindSignals() {
         EditDialog* dlg = new EditDialog(nullptr, this);
         connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
             if (result == 100) {
-                AppMeta app = dlg->getAppMeta();
+                QSharedPointer<AppMeta> app = dlg->getAppMeta();
                 appModel_->appendApp(app);
             }
 
@@ -126,8 +126,10 @@ void MainWindow::bindSignals() {
         QMenu* popMenu = new QMenu(this);
         popMenu->addAction(tr("Run"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                if (runApp(app)) {
+                QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                Q_ASSERT(app);
+                if (runApp(app, false)) {
+                    editSearch_->clear();
                     this->hide();
                 }
             }
@@ -136,9 +138,10 @@ void MainWindow::bindSignals() {
 #ifdef Q_OS_WINDOWS
         popMenu->addAction(tr("Run as administrator (&R)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                app.runAsAdmin = true;
-                if (runApp(app)) {
+                QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                Q_ASSERT(app);
+                if (runApp(app, true)) {
+                    editSearch_->clear();
                     this->hide();
                 }
             }
@@ -147,12 +150,12 @@ void MainWindow::bindSignals() {
 #endif
         popMenu->addAction(tr("Edit (&E)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                EditDialog* dlg = new EditDialog(&app, this);
+                QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                Q_ASSERT(app);
+                EditDialog* dlg = new EditDialog(app, this);
                 connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
                     if (result == 100) {
-                        AppMeta app = dlg->getAppMeta();
-                        appModel_->updateApp(app);
+                        appModel_->flush();
                     }
                 });
                 dlg->open();
@@ -161,7 +164,8 @@ void MainWindow::bindSignals() {
 
         popMenu->addAction(tr("Delete (&D)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
-                AppMeta app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                Q_ASSERT(app);
                 appModel_->removeApp(app);
             }
         });
@@ -219,8 +223,9 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
             case Qt::Key_Return:
                 if (listApp_->selectionModel()->hasSelection()) {
                     if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
-                        AppMeta app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                        if (runApp(app)) {
+                        QSharedPointer<AppMeta> app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                        if (runApp(app, false)) {
+                            editSearch_->clear();
                             this->hide();
                         }
                     }
@@ -257,21 +262,21 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
     return false;
 }
 
-bool MainWindow::runApp(const AppMeta& app) {
+bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
     bool result = false;
     bool isUrl = false;
     QString path;
 
-    if (IsUrl(app.path)) {
+    if (IsUrl(app->path)) {
         isUrl = true;
-        path = app.path;
+        path = app->path;
     }
     else {
-        if (QDir::isRelativePath(app.path)) {
-            path = QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QString(QDir::separator()) + QDir::toNativeSeparators(app.path);
+        if (QDir::isRelativePath(app->path)) {
+            path = QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QString(QDir::separator()) + QDir::toNativeSeparators(app->path);
         }
         else {
-            path = app.path;
+            path = app->path;
         }
     }
 
@@ -280,33 +285,33 @@ bool MainWindow::runApp(const AppMeta& app) {
     }
     else {
 #ifdef Q_OS_WINDOWS
-        if (app.runAsAdmin) {
+        if (forceAdmin || app->runAsAdmin) {
             result = (INT_PTR)(::ShellExecuteW(
                          nullptr,
                          L"runas",
                          path.toStdWString().c_str(),
-                         app.parameter.toStdWString().c_str(),
+                         app->parameter.toStdWString().c_str(),
                          L"",
                          SW_SHOWDEFAULT)) > 31;
         }
         else {
             QProcess proc;
             proc.setProgram(path);
-            proc.setNativeArguments(app.parameter);
+            proc.setNativeArguments(app->parameter);
             //proc.setWorkingDirectory();
             result = proc.startDetached();
         }
 #else
         QProcess proc;
         proc.setProgram(path);
-        proc.setNativeArguments(app.parameter);
+        proc.setNativeArguments(app->parameter);
         //proc.setWorkingDirectory();
         result = proc.startDetached();
 #endif
     }
 
     if (!result) {
-        QMessageBox::critical(this, "PortableStarter", tr("Unable to run application (%1 %2).").arg(path).arg(app.parameter));
+        QMessageBox::critical(this, "PortableStarter", tr("Unable to run application (%1 %2).").arg(path).arg(app->parameter));
     }
 
     return result;

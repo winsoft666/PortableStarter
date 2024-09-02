@@ -11,16 +11,16 @@
 class EditDialog : public QDialog {
     Q_OBJECT
    public:
-    EditDialog(const AppMeta* app, QWidget* parent = nullptr);
+    EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent = nullptr);
     ~EditDialog();
 
-    AppMeta getAppMeta() const;
+    QSharedPointer<AppMeta> getAppMeta() const;
 
    protected:
     void setupUi();
 
    protected:
-    AppMeta app_;
+    QSharedPointer<AppMeta> app_ = nullptr;
     QLineEdit* editPath_ = nullptr;
     QLineEdit* editParameter_ = nullptr;
     QLineEdit* editName_ = nullptr;
@@ -34,4 +34,4 @@ class EditDialog : public QDialog {
     QPushButton* btnOK_ = nullptr;
     QPushButton* btnCancel_ = nullptr;
 };
-#endif // !EDIT_DIALOG_H_
+#endif  // !EDIT_DIALOG_H_
