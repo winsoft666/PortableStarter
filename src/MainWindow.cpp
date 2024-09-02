@@ -284,34 +284,42 @@ bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
         result = QDesktopServices::openUrl(QUrl(path));
     }
     else {
-#ifdef Q_OS_WINDOWS
-        if (forceAdmin || app->runAsAdmin) {
-            result = (INT_PTR)(::ShellExecuteW(
-                         nullptr,
-                         L"runas",
-                         path.toStdWString().c_str(),
-                         app->parameter.toStdWString().c_str(),
-                         L"",
-                         SW_SHOWDEFAULT)) > 31;
+        QFileInfo fi(path);
+        if (fi.isDir()) {
+            result = QDesktopServices::openUrl(QUrl(QString("file:///%1").arg(path)));
         }
         else {
+#ifdef Q_OS_WINDOWS
+            if (forceAdmin || app->runAsAdmin) {
+                result = (INT_PTR)(::ShellExecuteW(
+                             nullptr,
+                             L"runas",
+                             path.toStdWString().c_str(),
+                             app->parameter.toStdWString().c_str(),
+                             L"",
+                             SW_SHOWDEFAULT)) > 31;
+            }
+            else {
+                QProcess proc;
+                proc.setProgram(path);
+                proc.setNativeArguments(app->parameter);
+                //proc.setWorkingDirectory();
+                result = proc.startDetached();
+            }
+#else
             QProcess proc;
             proc.setProgram(path);
             proc.setNativeArguments(app->parameter);
             //proc.setWorkingDirectory();
             result = proc.startDetached();
-        }
-#else
-        QProcess proc;
-        proc.setProgram(path);
-        proc.setNativeArguments(app->parameter);
-        //proc.setWorkingDirectory();
-        result = proc.startDetached();
 #endif
+        }
     }
 
     if (!result) {
-        QMessageBox::critical(this, "PortableStarter", tr("Unable to run application (%1 %2).").arg(path).arg(app->parameter));
+        QMessageBox::critical(this,
+            "PortableStarter", 
+            tr("Unable to start %1%2%3.").arg(path).arg(app->parameter.isEmpty() ? "" : " ").arg(app->parameter));
     }
 
     return result;

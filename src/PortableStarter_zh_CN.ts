@@ -128,9 +128,10 @@
         <translation>删除 (&amp;D)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="314"/>
-        <source>Unable to run application (%1 %2).</source>
-        <translation>无法启动应用程序 (%1 %2)。</translation>
+        <location filename="MainWindow.cpp" line="322"/>
+        <source>Unable to start %1%2%3.</source>
+        <oldsource>Unable to run application (%1 %2).</oldsource>
+        <translation>无法启动 %1%2%3。</translation>
     </message>
 </context>
 <context>
