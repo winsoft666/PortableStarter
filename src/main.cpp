@@ -14,10 +14,15 @@ int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
 
     QTranslator translator;
+    QTranslator qtTranslator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString& locale : uiLanguages) {
-        const QString baseName = "PortableStarter_" + QLocale(locale).name();
-        if (translator.load(":/build/" + baseName)) {
+        QString path = QCoreApplication::applicationDirPath() + "/translations/qt_" + QLocale(locale).name();
+        if (qtTranslator.load(path)) {
+            a.installTranslator(&qtTranslator);
+        }
+
+        if (translator.load(":/build/PortableStarter_" + QLocale(locale).name())) {
             a.installTranslator(&translator);
             break;
         }

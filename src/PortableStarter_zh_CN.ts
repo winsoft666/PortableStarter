@@ -79,57 +79,56 @@
         <translation>注册快速启动热键失败！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="47"/>
         <source>PortableStarter %1</source>
-        <translation>PortableStarter %1</translation>
+        <translation type="vanished">PortableStarter %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="48"/>
+        <location filename="MainWindow.cpp" line="50"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="52"/>
+        <location filename="MainWindow.cpp" line="54"/>
         <source>Homepage</source>
         <translation>官网</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="53"/>
+        <location filename="MainWindow.cpp" line="55"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="54"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>Exit Portable Starter?</source>
-        <translation>确定要退出Portable Starter吗？</translation>
+        <translation>确定要退出 Portable Starter 吗？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="70"/>
+        <location filename="MainWindow.cpp" line="72"/>
         <source>Search...</source>
         <translation>搜索...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="125"/>
+        <location filename="MainWindow.cpp" line="127"/>
         <source>Run</source>
         <translation>运行</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="135"/>
+        <location filename="MainWindow.cpp" line="137"/>
         <source>Run as administrator (&amp;R)</source>
         <translation>以管理员权限运行 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="146"/>
+        <location filename="MainWindow.cpp" line="148"/>
         <source>Edit (&amp;E)</source>
         <translation>编辑 (&amp;E)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="160"/>
+        <location filename="MainWindow.cpp" line="162"/>
         <source>Delete (&amp;D)</source>
         <translation>删除 (&amp;D)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="307"/>
+        <location filename="MainWindow.cpp" line="309"/>
         <source>Unable to run application (%1 %2).</source>
         <translation>无法启动应用程序 (%1 %2)。</translation>
     </message>

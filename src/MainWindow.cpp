@@ -43,8 +43,10 @@ bool MainWindow::setQuickStartHotkey(QString hotkey) {
 }
 
 void MainWindow::setupUi() {
+    setWindowTitle(QString("PortableStarter %1").arg(APP_VERSION));
+
     trayMenu_ = new QMenu();
-    trayMenu_->addAction(tr("PortableStarter %1").arg(APP_VERSION), [this]() { this->show(); });
+    trayMenu_->addAction(QString("PortableStarter %1").arg(APP_VERSION), [this]() { this->show(); });
     trayMenu_->addAction(tr("Options"), [this]() {
         OptionsDialog* dlg = new OptionsDialog(this);
         dlg->open();
@@ -53,7 +55,7 @@ void MainWindow::setupUi() {
     trayMenu_->addAction(tr("Exit"), [this]() {
         if (QMessageBox::question(this, "PortableStarter", tr("Exit Portable Starter?")) == QMessageBox::Yes) {
             allowExit_ = true;
-            close();
+            this->close();
         }
     });
 
@@ -180,7 +182,7 @@ void MainWindow::bindSignals() {
 
 void MainWindow::closeEvent(QCloseEvent* e) {
     if (allowExit_) {
-        e->accept();
+        qApp->quit();
     }
     else {
         e->ignore();
