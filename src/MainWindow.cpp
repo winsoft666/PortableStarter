@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "DSLLayout.hpp"
 #include "AppVersion.h"
+#include <stdlib.h>
 #include <QMessageBox>
 #include <QDesktopServices>
 #include "EditDialog.h"
@@ -60,7 +61,7 @@ void MainWindow::setupUi() {
     });
 
     trayIcon_ = new QSystemTrayIcon();
-    trayIcon_->setIcon(QIcon(":/images/logo.png"));
+    trayIcon_->setIcon(QIcon(":/images/logo.ico"));
     trayIcon_->setToolTip("Portable Starter");
     trayIcon_->setContextMenu(trayMenu_);
     trayIcon_->show();
@@ -68,7 +69,7 @@ void MainWindow::setupUi() {
     editSearch_ = new QLineEdit();
     editSearch_->setObjectName("editSearch");
     editSearch_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    editSearch_->setFixedHeight(28);
+    editSearch_->setFixedHeight(24);
     editSearch_->setPlaceholderText(tr("Search..."));
 
     appModel_ = new AppModel();
@@ -264,23 +265,10 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
 
 bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
     bool result = false;
-    bool isUrl = false;
-    QString path;
+    QString path = app->path;
+    QString param = app->parameter;
 
-    if (IsUrl(app->path)) {
-        isUrl = true;
-        path = app->path;
-    }
-    else {
-        if (QDir::isRelativePath(app->path)) {
-            path = QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QString(QDir::separator()) + QDir::toNativeSeparators(app->path);
-        }
-        else {
-            path = app->path;
-        }
-    }
-
-    if (isUrl) {
+    if (IsUrl(path)) {
         result = QDesktopServices::openUrl(QUrl(path));
     }
     else {
@@ -289,37 +277,68 @@ bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
             result = QDesktopServices::openUrl(QUrl(QString("file:///%1").arg(path)));
         }
         else {
+            if (app->cmdTool) {
+                QString appPath;
+                if (QDir::isRelativePath(path)) {
+                    QDir dir(QCoreApplication::applicationDirPath());
+                    appPath = QDir::toNativeSeparators(dir.absoluteFilePath(path));
+                }
+                else {
+                    appPath = path;
+                }
 #ifdef Q_OS_WINDOWS
-            if (forceAdmin || app->runAsAdmin) {
+                path = QString("C:\\Windows\\System32\\cmd.exe");
+                param = QString("/K CD /D %1 & DIR").arg(appPath.mid(0, appPath.lastIndexOf("\\")));
+
                 result = (INT_PTR)(::ShellExecuteW(
                              nullptr,
-                             L"runas",
+                             (forceAdmin || app->runAsAdmin) ? L"runas" : L"open",
                              path.toStdWString().c_str(),
-                             app->parameter.toStdWString().c_str(),
+                             param.toStdWString().c_str(),
                              L"",
                              SW_SHOWDEFAULT)) > 31;
+#else
+                // TODO
+#endif
             }
             else {
+                if (QDir::isRelativePath(path)) {
+                    QDir dir(QCoreApplication::applicationDirPath());
+                    path = QDir::toNativeSeparators(dir.absoluteFilePath(path));
+                }
+
+#ifdef Q_OS_WINDOWS
+                if (forceAdmin || app->runAsAdmin) {
+                    result = (INT_PTR)(::ShellExecuteW(
+                                 nullptr,
+                                 L"runas",
+                                 path.toStdWString().c_str(),
+                                 param.toStdWString().c_str(),
+                                 L"",
+                                 SW_SHOWDEFAULT)) > 31;
+                }
+                else {
+                    QProcess proc;
+                    proc.setProgram(path);
+                    proc.setNativeArguments(param);
+                    proc.setWorkingDirectory(path.mid(0, path.lastIndexOf(QDir::separator())));
+                    result = proc.startDetached();
+                }
+#else
                 QProcess proc;
                 proc.setProgram(path);
-                proc.setNativeArguments(app->parameter);
-                //proc.setWorkingDirectory();
+                proc.setNativeArguments(param);
+                proc.setWorkingDirectory(path.mid(0, path.lastIndexOf(QDir::separator())));
                 result = proc.startDetached();
-            }
-#else
-            QProcess proc;
-            proc.setProgram(path);
-            proc.setNativeArguments(app->parameter);
-            //proc.setWorkingDirectory();
-            result = proc.startDetached();
 #endif
+            }
         }
     }
 
     if (!result) {
         QMessageBox::critical(this,
-            "PortableStarter", 
-            tr("Unable to start %1%2%3.").arg(path).arg(app->parameter.isEmpty() ? "" : " ").arg(app->parameter));
+                              "PortableStarter",
+                              tr("Unable to start %1%2%3.").arg(path).arg(param.isEmpty() ? "" : " ").arg(param));
     }
 
     return result;

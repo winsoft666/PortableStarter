@@ -7,6 +7,7 @@
 struct AppMeta {
     QString id;
     bool runAsAdmin = false;
+    bool cmdTool = false;
     QString path;
     QString parameter;
     QString name;

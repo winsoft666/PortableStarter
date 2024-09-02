@@ -105,6 +105,7 @@ bool AppModel::loadJSON() {
         QSharedPointer<AppMeta> meta = QSharedPointer<AppMeta>::create();
         meta->id = obj["id"].toString();
         meta->runAsAdmin = obj["runAsAdmin"].toBool();
+        meta->cmdTool = obj["cmdTool"].toBool();
         meta->path = obj["path"].toString();
         meta->parameter = obj["parameter"].toString();
         meta->name = obj["name"].toString();
@@ -123,6 +124,7 @@ bool AppModel::saveJSON() {
         QJsonObject obj;
         obj["id"] = metas_[i]->id;
         obj["runAsAdmin"] = metas_[i]->runAsAdmin;
+        obj["cmdTool"] = metas_[i]->cmdTool;
         obj["path"] = metas_[i]->path;
         obj["parameter"] = metas_[i]->parameter;
         obj["name"] = metas_[i]->name;

@@ -14,7 +14,7 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
     setupUi();
 
     this->setWindowTitle(app_ == nullptr ? tr("Add") : tr("Edit"));
-    this->resize(500, 360);
+    this->resize(520, 400);
 
     connect(btnCancel_, &QPushButton::clicked, this, [this]() { done(0); });
 
@@ -26,6 +26,8 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
         app_->parameter = editParameter_->text().trimmed();
         app_->name = editName_->text().trimmed();
         app_->triggerKey = editTriggerKey_->text().trimmed();
+        app_->runAsAdmin = chkRunAsAdmin_->isChecked() ? 1 : 0;
+        app_->cmdTool = chkIsCmdTool_->isChecked() ? 1 : 0;
 
         if (!app_->path.isEmpty()) {
             if (IsUrl(app_->path)) {
@@ -108,6 +110,9 @@ void EditDialog::setupUi() {
     chkRunAsAdmin_ = new QCheckBox(tr("Run as administrator"));
     chkRunAsAdmin_->setCheckState((app_ && app_->runAsAdmin) ? Qt::Checked : Qt::Unchecked);
 
+    chkIsCmdTool_ = new QCheckBox(tr("Run as command line tool"));
+    chkIsCmdTool_->setCheckState((app_ && app_->cmdTool) ? Qt::Checked : Qt::Unchecked);
+
     btnOK_ = new QPushButton(tr("OK"));
     btnCancel_ = new QPushButton(tr("Cancel"));
 
@@ -117,7 +122,7 @@ void EditDialog::setupUi() {
 
     auto root = VBox(
         HBox(new QLabel(tr("Application, URL or Folder:")), Stretch()),
-        HBox(new QLabel(tr("  Support relative path, If PortableStarter is installed in X:\\PortableStarter, \n  you can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe")), Stretch()),
+        HBox(new QLabel(tr("    Support relative path, If PortableStarter is installed in X:\\PortableStarter, \n    you can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe")), Stretch()),
         HBox(editPath_, btnBrowserExe_, btnBrowserFolder_),
         HBox(Stretch(), btnToRelativePath_),
         Spacing(10),
@@ -133,6 +138,8 @@ void EditDialog::setupUi() {
 #ifdef Q_OS_WINDOWS
         HBox(chkRunAsAdmin_, Stretch()),
 #endif
+        HBox(chkIsCmdTool_, Stretch()),
+        HBox(new QLabel(tr("    Open terminal and change working directory to where the tool is located")), Stretch()),
         Stretch(),
         HBox(Stretch(), btnOK_, btnCancel_, Stretch()));
     this->setLayout(root);

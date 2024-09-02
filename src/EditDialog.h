@@ -26,6 +26,7 @@ class EditDialog : public QDialog {
     QLineEdit* editName_ = nullptr;
     QLineEdit* editTriggerKey_ = nullptr;
     QCheckBox* chkRunAsAdmin_ = nullptr;
+    QCheckBox* chkIsCmdTool_ = nullptr;
 
     QPushButton* btnToRelativePath_ = nullptr;
     QPushButton* btnBrowserExe_ = nullptr;

@@ -40,5 +40,5 @@ void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, c
 }
 
 QSize AppDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
-    return QSize(option.rect.width(), 28);
+    return QSize(option.rect.width(), 22);
 }

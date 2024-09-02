@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    a.setWindowIcon(QIcon(":/images/logo.png"));
+    a.setWindowIcon(QIcon(":/images/logo.ico"));
 
     MainWindow w;
     QSettings& settings = GetSettings();

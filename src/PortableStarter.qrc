@@ -2,9 +2,9 @@
     <qresource prefix="/">
         <file>images/exe.png</file>
         <file>images/folder.png</file>
-        <file>images/logo.png</file>
         <file>images/website.png</file>
         <file>images/new.png</file>
         <file>build/PortableStarter_zh_CN.qm</file>
+        <file>images/logo.ico</file>
     </qresource>
 </RCC>
