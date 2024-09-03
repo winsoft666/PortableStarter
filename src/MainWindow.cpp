@@ -83,6 +83,7 @@ void MainWindow::setupUi() {
     listApp_->setItemDelegate(new AppDelegate());
     listApp_->setModel(appModel_);
     listApp_->setContextMenuPolicy(Qt::CustomContextMenu);
+    listApp_->setSpacing(1);
 
     btnNew_ = new QPushButton(QIcon(":/images/new.png"), "");
     btnNew_->setObjectName("btnNew");

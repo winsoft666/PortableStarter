@@ -8,7 +8,7 @@ AppDelegate::AppDelegate(QObject* parent /*= nullptr*/) :
 
 void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QSettings& settings = GetSettings();
-    QPalette palette = option.widget->palette();
+    //QPalette palette = option.widget->palette();
 
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
@@ -21,10 +21,10 @@ void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, c
         painter->fillRect(option.rect, QColor(232, 232, 232, 255));
     }
     else {
-        painter->fillRect(option.rect, palette.color(QPalette::Window));
+        //painter->fillRect(option.rect, palette.color(QPalette::Window));
     }
 
-    QRect contentRect = option.rect.marginsRemoved(QMargins(2, 2, 2, 2));
+    QRect contentRect = option.rect.marginsRemoved(QMargins(2, 0, 2, 0));
 
     QRect iconRect(contentRect.left(), contentRect.top(), contentRect.height(), contentRect.height());
     QPixmap icon = index.data(Qt::UserRole + 1).value<QPixmap>();
