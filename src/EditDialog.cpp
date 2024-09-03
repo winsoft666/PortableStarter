@@ -34,19 +34,32 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
                 app_->icon = QPixmap(":/images/website.png");
             }
             else {
-                QFileInfo fi(app_->path);
+                QString path;
+                if (QDir::isRelativePath(app_->path)) {
+                    QDir dir(QCoreApplication::applicationDirPath());
+                    path = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(app_->path)));
+                }
+                else {
+                    path = app_->path;
+                }
+
+                QFileInfo fi(path);
                 if (fi.isDir()) {
                     app_->icon = QPixmap(":/images/folder.png");
                 }
                 else if (fi.isFile()) {
                     QFileIconProvider iconProvider;
                     QIcon ico = iconProvider.icon(fi);
-                    if (ico.isNull()) {
-                        app_->icon = QPixmap(":/images/exe.png");
-                    }
-                    else {
+                    if (!ico.isNull()) {
                         app_->icon = ico.pixmap(48, 48);
                     }
+
+                    if (app_->icon.isNull()) {
+                        app_->icon = QPixmap(":/images/exe.png");
+                    }
+                }
+                else {
+                    Q_ASSERT(false);
                 }
             }
         }

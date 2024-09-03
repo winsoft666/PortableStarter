@@ -8,6 +8,7 @@ AppDelegate::AppDelegate(QObject* parent /*= nullptr*/) :
 
 void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QSettings& settings = GetSettings();
+    QPalette palette = option.widget->palette();
 
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
@@ -18,6 +19,9 @@ void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, c
     }
     else if (option.state & QStyle::State_MouseOver) {
         painter->fillRect(option.rect, QColor(232, 232, 232, 255));
+    }
+    else {
+        painter->fillRect(option.rect, palette.color(QPalette::Window));
     }
 
     QRect contentRect = option.rect.marginsRemoved(QMargins(2, 2, 2, 2));

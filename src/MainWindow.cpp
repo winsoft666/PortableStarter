@@ -281,7 +281,7 @@ bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
                 QString appPath;
                 if (QDir::isRelativePath(path)) {
                     QDir dir(QCoreApplication::applicationDirPath());
-                    appPath = QDir::toNativeSeparators(dir.absoluteFilePath(path));
+                    appPath = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(path)));
                 }
                 else {
                     appPath = path;
@@ -304,7 +304,7 @@ bool MainWindow::runApp(const QSharedPointer<AppMeta>& app, bool forceAdmin) {
             else {
                 if (QDir::isRelativePath(path)) {
                     QDir dir(QCoreApplication::applicationDirPath());
-                    path = QDir::toNativeSeparators(dir.absoluteFilePath(path));
+                    path = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(path)));
                 }
 
 #ifdef Q_OS_WINDOWS

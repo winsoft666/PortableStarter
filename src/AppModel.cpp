@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QCoreApplication>
+#include "Helper.h"
 
 AppModel::AppModel(QObject* parent /*= nullptr*/) :
     QAbstractListModel(parent) {
@@ -110,7 +111,7 @@ bool AppModel::loadJSON() {
         meta->parameter = obj["parameter"].toString();
         meta->name = obj["name"].toString();
         meta->triggerKey = obj["triggerKey"].toString();
-        meta->icon.loadFromData(QByteArray::fromBase64(obj["icon"].toString().toUtf8()), "PNG");
+        meta->icon = ByteArrayToPixmap(QByteArray::fromBase64(obj["icon"].toString().toUtf8()));
 
         metas_.append(meta);
     }
@@ -130,13 +131,8 @@ bool AppModel::saveJSON() {
         obj["name"] = metas_[i]->name;
         obj["triggerKey"] = metas_[i]->triggerKey;
 
-        QByteArray iconByteArray;
-        if (!metas_[i]->icon.isNull()) {
-            QBuffer iconBuffer(&iconByteArray);
-            iconBuffer.open(QIODevice::WriteOnly);
-            metas_[i]->icon.save(&iconBuffer, "PNG");
-        }
-
+        QByteArray iconByteArray = PixmapToByteArray(metas_[i]->icon);
+        Q_ASSERT(!iconByteArray.isEmpty());
         obj["icon"] = QString::fromUtf8(iconByteArray.toBase64());
 
         root.append(obj);

@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include "Pinyin.h"
+#include <QBuffer>
 
 namespace {
 #ifdef Q_OS_MAC
@@ -132,11 +133,34 @@ bool GetStringLetters(const QString& string, QList<QString>& allLetters) {
     }
     allLetters.push_back(QString::fromStdWString(fullPY));
 
-    std::wstring letters;
-    for (const auto& it1 : vLetters) {
-        letters += it1[0];
+    if (vLetters.size() > 1) {
+        std::wstring letters;
+        for (const auto& it1 : vLetters) {
+            letters += it1[0];
+        }
+        allLetters.push_back(QString::fromStdWString(letters));
     }
-    allLetters.push_back(QString::fromStdWString(letters));
 
     return true;
+}
+
+QByteArray PixmapToByteArray(const QPixmap& pix) {
+    QByteArray arr;
+    if (!pix.isNull()) {
+        QBuffer iconBuffer(&arr);
+        iconBuffer.open(QIODevice::WriteOnly);
+        if (!pix.save(&iconBuffer, "png")) {
+            pix.save(&iconBuffer, "bmp");
+        }
+    }
+
+    return arr;
+}
+
+QPixmap ByteArrayToPixmap(const QByteArray& arr) {
+    QPixmap pix;
+    if (!pix.loadFromData(arr, "png")) {
+        pix.loadFromData(arr, "bmp");
+    }
+    return pix;
 }

@@ -14,47 +14,47 @@
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="60"/>
+        <location filename="EditDialog.cpp" line="73"/>
         <source>Select an executable file</source>
         <translation>选择一个可执行文件</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="62"/>
+        <location filename="EditDialog.cpp" line="75"/>
         <source>Executable Files (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;All Files (*.*)</source>
         <translation>可执行文件 (*.exe *.bat *.cmd *.ps1 *.msc *.dmg);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="110"/>
+        <location filename="EditDialog.cpp" line="123"/>
         <source>Run as administrator</source>
         <translation>以管理员权限运行</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="113"/>
+        <location filename="EditDialog.cpp" line="126"/>
         <source>Run as command line tool</source>
         <translation>以命令行工具运行</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="116"/>
+        <location filename="EditDialog.cpp" line="129"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="117"/>
+        <location filename="EditDialog.cpp" line="130"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="121"/>
+        <location filename="EditDialog.cpp" line="134"/>
         <source>Relative Path</source>
         <translation>相对路径</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="124"/>
+        <location filename="EditDialog.cpp" line="137"/>
         <source>Application, URL or Folder:</source>
         <translation>应用程序，链接或文件夹：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="125"/>
+        <location filename="EditDialog.cpp" line="138"/>
         <source>    Support relative path, If PortableStarter is installed in X:\PortableStarter, 
     you can use ..\prog\prog.exe to start the application from X:\prog\prog.exe</source>
         <oldsource>  Support relative path, If PortableStarter is installed in X:\PortableStarter, 
@@ -63,22 +63,22 @@
     你可以使用 ..\prog\prog.exe 来启动位于 X:\prog\prog.exe 的程序</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="129"/>
+        <location filename="EditDialog.cpp" line="142"/>
         <source>Parameter:</source>
         <translation>参数：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="132"/>
+        <location filename="EditDialog.cpp" line="145"/>
         <source>Name:</source>
         <translation>名称：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="135"/>
+        <location filename="EditDialog.cpp" line="148"/>
         <source>Trigger Keyword (Split multiple keywords with commas):</source>
         <translation>触发关键字（使用逗号分割多个关键字）：</translation>
     </message>
     <message>
-        <location filename="EditDialog.cpp" line="142"/>
+        <location filename="EditDialog.cpp" line="155"/>
         <source>    Open terminal and change working directory to where the tool is located</source>
         <translation>    打开终端并且将工作目录切换到该工具所在位置</translation>
     </message>
