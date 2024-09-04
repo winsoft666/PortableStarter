@@ -3,9 +3,10 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QCoreApplication>
-
 #include "Helper.h"
 #include "DSLLayout.hpp"
+#include "CategoryEditDialog.h"
+
 using namespace tk;
 
 EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nullptr*/) :
@@ -14,7 +15,7 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
     setupUi();
 
     this->setWindowTitle(app_ == nullptr ? tr("Add") : tr("Edit"));
-    this->resize(520, 400);
+    this->resize(520, 420);
 
     connect(btnCancel_, &QPushButton::clicked, this, [this]() { done(0); });
 
@@ -22,6 +23,8 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
         if (!app_) {
             app_ = QSharedPointer<AppMeta>::create();
         }
+
+        app_->category = cmbCategory_->currentText();
         app_->path = editPath_->text().trimmed();
         app_->parameter = editParameter_->text().trimmed();
         app_->name = editName_->text().trimmed();
@@ -29,42 +32,56 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
         app_->runAsAdmin = chkRunAsAdmin_->isChecked() ? 1 : 0;
         app_->cmdTool = chkIsCmdTool_->isChecked() ? 1 : 0;
 
-        if (!app_->path.isEmpty()) {
-            if (IsUrl(app_->path)) {
-                app_->icon = QPixmap(":/images/website.png");
+        if (app_->path.isEmpty() || app_->name.isEmpty()) {
+            done(0);
+            return;
+        }
+
+        if (IsUrl(app_->path)) {
+            app_->icon = QPixmap(":/images/website.png");
+        }
+        else {
+            QString path;
+            if (QDir::isRelativePath(app_->path)) {
+                QDir dir(QCoreApplication::applicationDirPath());
+                path = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(app_->path)));
             }
             else {
-                QString path;
-                if (QDir::isRelativePath(app_->path)) {
-                    QDir dir(QCoreApplication::applicationDirPath());
-                    path = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(app_->path)));
-                }
-                else {
-                    path = app_->path;
+                path = app_->path;
+            }
+
+            QFileInfo fi(path);
+            if (fi.isDir()) {
+                app_->icon = QPixmap(":/images/folder.png");
+            }
+            else if (fi.isFile()) {
+                QFileIconProvider iconProvider;
+                QIcon ico = iconProvider.icon(fi);
+                if (!ico.isNull()) {
+                    app_->icon = ico.pixmap(48, 48);
                 }
 
-                QFileInfo fi(path);
-                if (fi.isDir()) {
-                    app_->icon = QPixmap(":/images/folder.png");
+                if (app_->icon.isNull()) {
+                    app_->icon = QPixmap(":/images/exe.png");
                 }
-                else if (fi.isFile()) {
-                    QFileIconProvider iconProvider;
-                    QIcon ico = iconProvider.icon(fi);
-                    if (!ico.isNull()) {
-                        app_->icon = ico.pixmap(48, 48);
-                    }
-
-                    if (app_->icon.isNull()) {
-                        app_->icon = QPixmap(":/images/exe.png");
-                    }
-                }
-                else {
-                    Q_ASSERT(false);
-                }
+            }
+            else {
+                Q_ASSERT(false);
             }
         }
 
         done(100);
+    });
+
+    connect(btnEditCategory_, &QPushButton::clicked, this, [this]() {
+        CategoryEditDialog* dlg = new CategoryEditDialog(this);
+        connect(dlg, &QDialog::finished, this, [this](int result) {
+            if (result == 100) {
+                cmbCategory_->clear();
+                cmbCategory_->addItems(GetSettings().value("Category").toStringList());
+            }
+        });
+        dlg->open();
     });
 
     connect(btnBrowserExe_, &QPushButton::clicked, this, [this]() {
@@ -80,8 +97,9 @@ EditDialog::EditDialog(const QSharedPointer<AppMeta> app, QWidget* parent /*= nu
 
     connect(btnBrowserFolder_, &QPushButton::clicked, this, [this]() {
         const QString strPath = QFileDialog::getExistingDirectory(this);
-        if (!strPath.isEmpty())
+        if (!strPath.isEmpty()) {
             editPath_->setText(QDir::toNativeSeparators(strPath));
+        }
     });
 
     connect(btnToRelativePath_, &QPushButton::clicked, this, [this]() {
@@ -115,6 +133,15 @@ QSharedPointer<AppMeta> EditDialog::getAppMeta() const {
 }
 
 void EditDialog::setupUi() {
+    cmbCategory_ = new QComboBox();
+    cmbCategory_->setMinimumWidth(180);
+    QStringList categories = GetSettings().value("Category").toStringList();
+    categories.push_front("");
+    cmbCategory_->addItems(categories);
+    cmbCategory_->setCurrentText(app_ ? app_->category : "");
+
+    btnEditCategory_ = new QPushButton(tr("Edit"));
+
     editPath_ = new QLineEdit(app_ ? app_->path : "");
     editParameter_ = new QLineEdit(app_ ? app_->parameter : "");
     editName_ = new QLineEdit(app_ ? app_->name : "");
@@ -134,6 +161,9 @@ void EditDialog::setupUi() {
     btnToRelativePath_ = new QPushButton(tr("Relative Path"));
 
     auto root = VBox(
+        HBox(new QLabel(tr("Category:")), Stretch()),
+        HBox(cmbCategory_, Spacing(20), btnEditCategory_, Stretch()),
+        Spacing(10),
         HBox(new QLabel(tr("Application, URL or Folder:")), Stretch()),
         HBox(new QLabel(tr("    Support relative path, If PortableStarter is installed in X:\\PortableStarter, \n    you can use ..\\prog\\prog.exe to start the application from X:\\prog\\prog.exe")), Stretch()),
         HBox(editPath_, btnBrowserExe_, btnBrowserFolder_),

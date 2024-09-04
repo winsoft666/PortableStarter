@@ -11,7 +11,7 @@ class AppModel : public QAbstractListModel {
     AppModel(QObject* parent = nullptr);
 
    public slots:
-    void setFilter(const QString& filter);
+    void setFilter(const QString& search, const QString& category);
     void appendApp(const QSharedPointer<AppMeta>& app);
     void removeApp(const QSharedPointer<AppMeta>& app);
     void flush();
@@ -29,7 +29,8 @@ class AppModel : public QAbstractListModel {
     QVariant data(const QModelIndex& index, int role) const override;
 
    protected:
-    QString filter_;
+    QString filterSearch_;
+    QString filterCategory_;
     QList<QSharedPointer<AppMeta>> metas_;
     QList<QSharedPointer<AppMeta>> shownMetas_;
 };

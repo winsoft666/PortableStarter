@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         MainWindow.h
         EditDialog.h
         EditDialog.cpp
+        CategoryEditDialog.h
+        CategoryEditDialog.cpp
         OptionsDialog.h
         OptionsDialog.cpp
         AppVersion.h

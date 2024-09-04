@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QListView>
 #include <QMenu>
+#include <QTabBar>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 #include "QHotkey"
@@ -36,7 +37,7 @@ class MainWindow : public QWidget {
    protected slots:
     void selectFirstRow();
     void recordWindowGeometry();
-
+    void reloadCategoryTab();
    protected:
     bool allowExit_ = false;
     QHotkey* qucikStartHotkey_ = nullptr;
@@ -44,6 +45,7 @@ class MainWindow : public QWidget {
     QSystemTrayIcon* trayIcon_ = nullptr;
     QLineEdit* editSearch_ = nullptr;
     QPushButton* btnNew_ = nullptr;
+    QTabBar* tabBar_ = nullptr;
     QListView* listApp_ = nullptr;
     AppModel* appModel_ = nullptr;
 };

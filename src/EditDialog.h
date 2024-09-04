@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QComboBox>
 #include "AppDef.h"
 
 class EditDialog : public QDialog {
@@ -21,6 +22,8 @@ class EditDialog : public QDialog {
 
    protected:
     QSharedPointer<AppMeta> app_ = nullptr;
+    QComboBox* cmbCategory_ = nullptr;
+    QPushButton* btnEditCategory_ = nullptr;
     QLineEdit* editPath_ = nullptr;
     QLineEdit* editParameter_ = nullptr;
     QLineEdit* editName_ = nullptr;

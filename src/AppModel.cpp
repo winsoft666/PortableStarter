@@ -1,6 +1,7 @@
 #include "AppModel.h"
 #include <QFile>
 #include <QBuffer>
+#include <QThread>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonParseError>
@@ -9,21 +10,26 @@
 
 AppModel::AppModel(QObject* parent /*= nullptr*/) :
     QAbstractListModel(parent) {
+    beginResetModel();
     if (loadJSON()) {
         for (auto it = metas_.begin(); it != metas_.end(); ++it) {
             shownMetas_.append(*it);
         }
     }
+    endResetModel();
 }
 
-void AppModel::setFilter(const QString& filter) {
-    filter_ = filter.toLower();
+void AppModel::setFilter(const QString& search, const QString& category) {
+    filterSearch_ = search.toLower();
+    filterCategory_ = category;
 
     beginResetModel();
     shownMetas_.clear();
     for (auto it = metas_.begin(); it != metas_.end(); ++it) {
-        if (filter_.isEmpty() || (*it)->triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
-            shownMetas_.append(*it);
+        if (filterCategory_.isEmpty() || (*it)->category == filterCategory_) {
+            if (filterSearch_.isEmpty() || (*it)->triggerKey.indexOf(filterSearch_, 0, Qt::CaseInsensitive) >= 0) {
+                shownMetas_.append(*it);
+            }
         }
     }
     endResetModel();
@@ -33,8 +39,10 @@ void AppModel::appendApp(const QSharedPointer<AppMeta>& app) {
     beginInsertRows(QModelIndex(), metas_.size(), metas_.size() + 1);
     metas_.append(app);
     saveJSON();
-    if (filter_.isEmpty() || app->triggerKey.indexOf(filter_, 0, Qt::CaseInsensitive) >= 0) {
-        shownMetas_.append(app);
+    if (filterCategory_.isEmpty() || app->category == filterCategory_) {
+        if (filterSearch_.isEmpty() || app->triggerKey.indexOf(filterSearch_, 0, Qt::CaseInsensitive) >= 0) {
+            shownMetas_.append(app);
+        }
     }
     endInsertRows();
 }
@@ -107,6 +115,7 @@ bool AppModel::loadJSON() {
         meta->id = obj["id"].toString();
         meta->runAsAdmin = obj["runAsAdmin"].toBool();
         meta->cmdTool = obj["cmdTool"].toBool();
+        meta->category = obj["category"].toString();
         meta->path = obj["path"].toString();
         meta->parameter = obj["parameter"].toString();
         meta->name = obj["name"].toString();
@@ -126,6 +135,7 @@ bool AppModel::saveJSON() {
         obj["id"] = metas_[i]->id;
         obj["runAsAdmin"] = metas_[i]->runAsAdmin;
         obj["cmdTool"] = metas_[i]->cmdTool;
+        obj["category"] = metas_[i]->category;
         obj["path"] = metas_[i]->path;
         obj["parameter"] = metas_[i]->parameter;
         obj["name"] = metas_[i]->name;

@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget* parent) :
     listApp_->installEventFilter(this);
     editSearch_->installEventFilter(this);
 
+    reloadCategoryTab();
+
     QString quickStartHotkey = GetSettings().value("QuickStartHotkey").toString();
     if (!quickStartHotkey.isEmpty()) {
         if (!qucikStartHotkey_->setShortcut(quickStartHotkey, true)) {
@@ -72,6 +74,29 @@ void MainWindow::setupUi() {
     editSearch_->setFixedHeight(24);
     editSearch_->setPlaceholderText(tr("Search..."));
 
+    tabBar_ = new QTabBar();
+    tabBar_->setExpanding(false);
+    tabBar_->setElideMode(Qt::ElideRight);
+    tabBar_->setDrawBase(false);
+    tabBar_->setShape(QTabBar::RoundedNorth);
+    tabBar_->setStyleSheet(
+        u8R"(
+    QTabBar::tab:top {
+        border: none;
+        border-radius: 4px;
+        padding: 2px 6px 2px 6px;
+        margin-right: 6px;
+        min-width: 20px;
+        min-height: 16px;
+        background-color: #C0C4C8;
+    }
+
+    QTabBar::tab:top:selected {
+        color: #FFFFFF;
+        background-color: #1296DB;
+    }
+    )");
+
     appModel_ = new AppModel();
 
     listApp_ = new QListView();
@@ -91,6 +116,7 @@ void MainWindow::setupUi() {
 
     auto root = VBox(
         HBox(editSearch_, btnNew_),
+        tabBar_,
         listApp_);
     this->setLayout(root);
 
@@ -104,7 +130,19 @@ void MainWindow::bindSignals() {
     });
 
     connect(editSearch_, &QLineEdit::textChanged, this, [this](const QString& text) {
-        appModel_->setFilter(text);
+        QString category;
+        if (tabBar_->currentIndex() > 0) {
+            category = tabBar_->tabText(tabBar_->currentIndex());
+        }
+        appModel_->setFilter(text, category);
+    });
+
+    connect(tabBar_, &QTabBar::currentChanged, this, [this](int index) {
+        QString category;
+        if (index > 0) {
+            category = tabBar_->tabText(index);
+        }
+        appModel_->setFilter(editSearch_->text(), category);
     });
 
     connect(btnNew_, &QPushButton::clicked, this, [this]() {
@@ -114,6 +152,8 @@ void MainWindow::bindSignals() {
                 QSharedPointer<AppMeta> app = dlg->getAppMeta();
                 appModel_->appendApp(app);
             }
+
+            reloadCategoryTab();
 
             dlg->deleteLater();
         });
@@ -159,6 +199,7 @@ void MainWindow::bindSignals() {
                     if (result == 100) {
                         appModel_->flush();
                     }
+                    reloadCategoryTab();
                 });
                 dlg->open();
             }
@@ -222,7 +263,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
         int key = keyEvent->key();
         switch (key) {
             case Qt::Key_Enter:
-            case Qt::Key_Return:
+            case Qt::Key_Return: {
                 if (listApp_->selectionModel()->hasSelection()) {
                     if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
                         QSharedPointer<AppMeta> app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
@@ -233,12 +274,14 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
                     }
                 }
                 break;
-            case Qt::Key_Escape:
+            }
+            case Qt::Key_Escape: {
                 editSearch_->clear();
                 this->hide();
                 break;
+            }
             case Qt::Key_Up:
-            case Qt::Key_Down:
+            case Qt::Key_Down: {
                 const int rowCount = listApp_->model()->rowCount();
                 if (rowCount > 0) {
                     int curSelectedRow = 0;
@@ -259,6 +302,17 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
                     listApp_->setCurrentIndex(listApp_->model()->index(curSelectedRow, 0));
                 }
                 break;
+            }
+            case Qt::Key_Tab: {
+                const int curIdx = tabBar_->currentIndex();
+                if (tabBar_->currentIndex() == tabBar_->count() - 1) {
+                    tabBar_->setCurrentIndex(0);
+                }
+                else {
+                    tabBar_->setCurrentIndex(tabBar_->currentIndex() + 1);
+                }
+                return true;
+            }
         }
     }
     return false;
@@ -356,5 +410,17 @@ void MainWindow::recordWindowGeometry() {
     QSettings& settings = GetSettings();
     if (settings.value("RememberWindowPosAndSize").toInt() == 1) {
         settings.setValue("WindowGeometry", this->geometry());
+    }
+}
+
+void MainWindow::reloadCategoryTab() {
+    while (tabBar_->count() > 0) {
+        tabBar_->removeTab(0);
+    }
+
+    QStringList categories = GetSettings().value("Category").toStringList();
+    tabBar_->addTab(tr("All"));
+    foreach (const QString& c, categories) {
+        tabBar_->addTab(c);
     }
 }
