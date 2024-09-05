@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget* parent) :
     setupUi();
     bindSignals();
 
-    listApp_->installEventFilter(this);
+    this->installEventFilter(this);
     editSearch_->installEventFilter(this);
 
     reloadCategoryTab();
@@ -170,9 +170,11 @@ void MainWindow::bindSignals() {
             if (listApp_->selectionModel()->hasSelection()) {
                 QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
                 Q_ASSERT(app);
-                if (runApp(app, false)) {
-                    editSearch_->clear();
-                    this->hide();
+                if (app) {
+                    if (runApp(app, false)) {
+                        editSearch_->clear();
+                        this->hide();
+                    }
                 }
             }
         });
@@ -190,18 +192,44 @@ void MainWindow::bindSignals() {
         });
 #else
 #endif
+
+        popMenu->addAction(tr("Open the folder (&F)"), [this]() {
+            if (listApp_->selectionModel()->hasSelection()) {
+                QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                Q_ASSERT(app);
+                if (app && !app->path.isEmpty()) {
+                    QFileInfo fi(app->path);
+                    if (fi.isDir()) {
+                        QDesktopServices::openUrl(QUrl(QString("file:///%1").arg(app->path)));
+                    }
+                    else {
+                        QString appPath = app->path;
+                        if (QDir::isRelativePath(appPath)) {
+                            QDir dir(QCoreApplication::applicationDirPath());
+                            appPath = QDir::toNativeSeparators(QDir::cleanPath(dir.absoluteFilePath(appPath)));
+                        }
+
+                        QString strDir = appPath.mid(0, appPath.lastIndexOf(QDir::separator()));
+                        QDesktopServices::openUrl(QUrl(QString("file:///%1").arg(strDir)));
+                    }
+                }
+            }
+        });
+
         popMenu->addAction(tr("Edit (&E)"), [this]() {
             if (listApp_->selectionModel()->hasSelection()) {
                 QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
                 Q_ASSERT(app);
-                EditDialog* dlg = new EditDialog(app, this);
-                connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
-                    if (result == 100) {
-                        appModel_->flush();
-                    }
-                    reloadCategoryTab();
-                });
-                dlg->open();
+                if (app) {
+                    EditDialog* dlg = new EditDialog(app, this);
+                    connect(dlg, &QDialog::finished, this, [dlg, this](int result) {
+                        if (result == 100) {
+                            appModel_->flush();
+                        }
+                        reloadCategoryTab();
+                        });
+                    dlg->open();
+                }
             }
         });
 
@@ -209,7 +237,9 @@ void MainWindow::bindSignals() {
             if (listApp_->selectionModel()->hasSelection()) {
                 QSharedPointer<AppMeta> app = appModel_->getApp(listApp_->selectionModel()->selectedRows()[0].row());
                 Q_ASSERT(app);
-                appModel_->removeApp(app);
+                if (app) {
+                    appModel_->removeApp(app);
+                }
             }
         });
 
@@ -218,7 +248,10 @@ void MainWindow::bindSignals() {
     });
 
     connect(qucikStartHotkey_, &QHotkey::activated, this, [this]() {
-        if (isVisible()) {
+        if (this->isVisible()) {
+            if (this->isMinimized()) {
+                this->showNormal();
+            }
             editSearch_->setFocus();
         }
         else {
@@ -253,12 +286,7 @@ void MainWindow::resizeEvent(QResizeEvent* e) {
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
-    if (obj != editSearch_ && obj != listApp_) {
-        return false;
-    }
-
-    QEvent::Type t = e->type();
-    if (t == QEvent::KeyPress) {
+    if (e->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(e);
         int key = keyEvent->key();
         switch (key) {

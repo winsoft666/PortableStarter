@@ -119,7 +119,7 @@
         <translation type="vanished">PortableStarter %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="422"/>
+        <location filename="MainWindow.cpp" line="450"/>
         <source>All</source>
         <translation>全部</translation>
     </message>
@@ -154,22 +154,28 @@
         <translation>运行</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="181"/>
+        <location filename="MainWindow.cpp" line="183"/>
         <source>Run as administrator (&amp;R)</source>
         <translation>以管理员权限运行 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="193"/>
+        <location filename="MainWindow.cpp" line="196"/>
+        <source>Open the folder (&amp;F)</source>
+        <oldsource>Open folder (&amp;F)</oldsource>
+        <translation>打开所在的文件夹 (&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="219"/>
         <source>Edit (&amp;E)</source>
         <translation>编辑 (&amp;E)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="208"/>
+        <location filename="MainWindow.cpp" line="236"/>
         <source>Delete (&amp;D)</source>
         <translation>删除 (&amp;D)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="396"/>
+        <location filename="MainWindow.cpp" line="424"/>
         <source>Unable to start %1%2%3.</source>
         <oldsource>Unable to run application (%1 %2).</oldsource>
         <translation>无法启动 %1%2%3。</translation>
