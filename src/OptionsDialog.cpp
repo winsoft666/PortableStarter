@@ -53,7 +53,7 @@ void OptionsDialog::setupUi() {
     chkRememberPosSize_->setCheckState(settings.value("RememberWindowPosAndSize").toInt() == 1 ? Qt::Checked : Qt::Unchecked);
 
     chkShowPathAndParam_ = new QCheckBox(tr("Show path and parameter in list"));
-    chkShowPathAndParam_->setCheckState(settings.value("ShowPathAndParameter").toInt() == 1 ? Qt::Checked : Qt::Unchecked);
+    chkShowPathAndParam_->setCheckState(settings.value("ShowPathAndParameter", SETTING_DEFAULT_SHOW_PATH_AND_PARAMETER).toInt() == 1 ? Qt::Checked : Qt::Unchecked);
 
     keyEditQuickStart_ = new QKeySequenceEdit(settings.value("QuickStartHotkey").toString());
 

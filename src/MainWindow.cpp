@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget* parent) :
     bindSignals();
 
     this->installEventFilter(this);
-    editSearch_->installEventFilter(this);
+    listApp_->installEventFilter(this); // for tab event
+    editSearch_->installEventFilter(this); // for tab event
 
     reloadCategoryTab();
 
@@ -292,12 +293,14 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
         switch (key) {
             case Qt::Key_Enter:
             case Qt::Key_Return: {
-                if (listApp_->selectionModel()->hasSelection()) {
-                    if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
-                        QSharedPointer<AppMeta> app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
-                        if (runApp(app, false)) {
-                            editSearch_->clear();
-                            this->hide();
+                if (obj == this) {
+                    if (listApp_->selectionModel()->hasSelection()) {
+                        if (const auto pModel = dynamic_cast<AppModel*>(listApp_->selectionModel()->model())) {
+                            QSharedPointer<AppMeta> app = pModel->getApp(listApp_->selectionModel()->selectedRows()[0].row());
+                            if (runApp(app, false)) {
+                                editSearch_->clear();
+                                this->hide();
+                            }
                         }
                     }
                 }
@@ -310,24 +313,26 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
             }
             case Qt::Key_Up:
             case Qt::Key_Down: {
-                const int rowCount = listApp_->model()->rowCount();
-                if (rowCount > 0) {
-                    int curSelectedRow = 0;
-                    if (listApp_->selectionModel()->hasSelection()) {
-                        curSelectedRow = listApp_->selectionModel()->selectedRows()[0].row();  // single selection
-                        if (key == Qt::Key_Down) {
-                            curSelectedRow += keyEvent->count();
-                            if (curSelectedRow > rowCount - 1)
-                                curSelectedRow = 0;
+                if (obj == this) {
+                    const int rowCount = listApp_->model()->rowCount();
+                    if (rowCount > 0) {
+                        int curSelectedRow = 0;
+                        if (listApp_->selectionModel()->hasSelection()) {
+                            curSelectedRow = listApp_->selectionModel()->selectedRows()[0].row();
+                            if (key == Qt::Key_Down) {
+                                curSelectedRow += keyEvent->count();
+                                if (curSelectedRow > rowCount - 1)
+                                    curSelectedRow = 0;
+                            }
+                            else {
+                                curSelectedRow -= keyEvent->count();
+                                if (curSelectedRow < 0)
+                                    curSelectedRow = rowCount - 1;
+                            }
                         }
-                        else {
-                            curSelectedRow -= keyEvent->count();
-                            if (curSelectedRow < 0)
-                                curSelectedRow = rowCount - 1;
-                        }
-                    }
 
-                    listApp_->setCurrentIndex(listApp_->model()->index(curSelectedRow, 0));
+                        listApp_->setCurrentIndex(listApp_->model()->index(curSelectedRow, 0));
+                    }
                 }
                 break;
             }
@@ -339,7 +344,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
                 else {
                     tabBar_->setCurrentIndex(tabBar_->currentIndex() + 1);
                 }
-                return true;
+                return true; // stop handing
             }
         }
     }

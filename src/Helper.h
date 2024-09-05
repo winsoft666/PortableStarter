@@ -6,6 +6,8 @@
 #include <QByteArray>
 #include <QPixmap>
 
+#define SETTING_DEFAULT_SHOW_PATH_AND_PARAMETER 1
+
 QSettings& GetSettings();
 
 void SetStartWithOS(bool startAutomatically);

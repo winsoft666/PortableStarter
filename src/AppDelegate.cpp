@@ -33,14 +33,33 @@ void AppDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, c
     QRect txtRect = contentRect.marginsRemoved(QMargins(contentRect.left() + contentRect.height() + 4, 0, 0, 0));
     QString text = index.data(Qt::UserRole + 2).toString();
 
-    if (GetSettings().value("ShowPathAndParameter").toInt() == 1) {
-        QString pathAndParam = index.data(Qt::UserRole + 3).toString();
-        if (!pathAndParam.isEmpty()) {
-            text.append(" ");
-            text.append(pathAndParam);
+    QRect boundingRect;
+    painter->drawText(txtRect, Qt::AlignVCenter | Qt::AlignLeft, index.data(Qt::UserRole + 2).toString(), &boundingRect);
+
+    if (GetSettings().value("ShowPathAndParameter", SETTING_DEFAULT_SHOW_PATH_AND_PARAMETER).toInt() == 1) {
+        txtRect = txtRect.marginsRemoved(QMargins(boundingRect.width() + 10, 0,0,0));
+
+        painter->save();
+
+        QFont font = painter->font();
+        if (font.pixelSize() != -1) {
+            font.setPixelSize(font.pixelSize() * 0.8);
         }
+        else {
+            font.setPointSizeF(font.pointSizeF() * 0.8);
+        }
+        painter->setFont(font);
+
+        QPen pen = painter->pen();
+        QColor txtColor = pen.color();
+        txtColor.setAlpha(160);
+        pen.setColor(txtColor);
+        painter->setPen(pen);
+
+        painter->drawText(txtRect,  Qt::AlignVCenter | Qt::AlignLeft, index.data(Qt::UserRole + 3).toString());
+
+        painter->restore();
     }
-    painter->drawText(txtRect, Qt::AlignVCenter | Qt::AlignLeft, text);
 }
 
 QSize AppDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
