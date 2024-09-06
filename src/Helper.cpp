@@ -65,7 +65,7 @@ void SetStartWithOS(bool startAutomatically) {
     registrySettings.remove(key);
 
     if (startAutomatically) {
-        registrySettings.setValue(key, QString("\"" + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\""));
+        registrySettings.setValue(key, QString("\"" + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\" -autostart"));
     }
 
     registrySettings.sync();

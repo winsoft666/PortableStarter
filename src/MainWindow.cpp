@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget* parent) :
     bindSignals();
 
     this->installEventFilter(this);
-    listApp_->installEventFilter(this); // for tab event
-    editSearch_->installEventFilter(this); // for tab event
+    listApp_->installEventFilter(this);     // for tab event
+    editSearch_->installEventFilter(this);  // for tab event
 
     reloadCategoryTab();
 
@@ -228,7 +228,7 @@ void MainWindow::bindSignals() {
                             appModel_->flush();
                         }
                         reloadCategoryTab();
-                        });
+                    });
                     dlg->open();
                 }
             }
@@ -253,11 +253,11 @@ void MainWindow::bindSignals() {
             if (this->isMinimized()) {
                 this->showNormal();
             }
-            editSearch_->setFocus();
         }
         else {
             this->show();
         }
+        this->activateWindow();
     });
 }
 
@@ -344,7 +344,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* e) {
                 else {
                     tabBar_->setCurrentIndex(tabBar_->currentIndex() + 1);
                 }
-                return true; // stop handing
+                return true;  // stop handing
             }
         }
     }

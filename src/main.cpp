@@ -43,7 +43,10 @@ int main(int argc, char* argv[]) {
     else {
         w.setGeometry(geo);
     }
-    w.show();
+
+    if (!(argc >= 2 && strcmp(argv[1], "-autostart") == 0)) {
+        w.show();
+    }
 
     return a.exec();
 }
